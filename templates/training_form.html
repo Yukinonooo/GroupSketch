@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Parameter Setting - {{ filename }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+            --warning-color: #f8961e;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #f0f2f5;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .progress-container {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .result-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result-gif {
+            max-width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .back-btn {
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="btn btn-secondary back-btn">
+            <i class="bi bi-arrow-left"></i> Back to Home
+        </a>
+        
+        <h1><i class="bi bi-robot"></i> AI Train Parameter Setting</h1>
+        
+        <form id="training-form">
+            <div class="form-group">
+                <label for="caption"> Animation Prompt(Caption) *</label>
+                <textarea id="caption" rows="3" placeholder="Please describe the content of the animation you want to generate..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="output-folder">Output Folder Name</label>
+                <input type="text" id="output-folder" value="web_training_{{ filename }}" placeholder="The name of the folder to save the training result">
+            </div>
+            
+            <div class="form-group">
+                <label for="num-iter">Training Iterations</label>
+                <input type="number" id="num-iter" value="1000" min="100" max="5000" step="100">
+            </div>
+            
+            <div class="form-group">
+                <label for="rotation-weight">Rotation Weight</label>
+                <input type="number" id="rotation-weight" value="0.01" min="0" max="1" step="0.001">
+            </div>
+            
+            <div class="form-group">
+                <label for="scale-weight">Scale Weight</label>
+                <input type="number" id="scale-weight" value="0.05" min="0" max="1" step="0.001">
+            </div>
+            
+            <div class="form-group">
+                <label for="shear-weight">Shear Weight</label>
+                <input type="number" id="shear-weight" value="0.1" min="0" max="1" step="0.001">
+            </div>
+            
+            <div class="form-group">
+                <label for="translation-weight">Translation Weight</label>
+                <input type="number" id="translation-weight" value="0.01" min="0" max="1" step="0.001">
+            </div>
+            
+            
+            <button type="submit" class="btn btn-primary" id="start-training-btn">
+                <i class="bi bi-play-circle"></i> Start Training
+            </button>
+            
+            <div class="error-message" id="error-message"></div>
+        </form>
+        
+        <div class="progress-container" id="progress-container">
+            <h3><i class="bi bi-cpu"></i> Training Progress</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-info">
+                <div>Step: <span id="current-step">0</span> / <span id="total-steps">0</span></div>
+                <div>Progress: <span id="progress-percent">0</span>%</div>
+                <div>Loss: <span id="current-loss">0</span></div>
+                <div>Elapsed Time: <span id="elapsed-time">0</span> minutes</div>
+                <div>Estimated Remaining: <span id="remaining-time">0</span> minutes</div>
+                <div>Learning Rate: <span id="learning-rate">0</span></div>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-container">
+            <h3><i class="bi bi-check-circle"></i> Training Completed!</h3>
+            <img id="result-gif" class="result-gif" alt="Training Result Animation">
+        </div>
+    </div>
+
+    <script>
+        const fileId = '{{ file_id }}';
+        let currentTaskId = null;
+        let eventSource = null;
+
+
+        document.getElementById('training-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                file_id: fileId,
+                caption: document.getElementById('caption').value,
+                output_folder: document.getElementById('output-folder').value,
+                num_iter: parseInt(document.getElementById('num-iter').value),
+                rotation_weight: parseFloat(document.getElementById('rotation-weight').value),
+                scale_weight: parseFloat(document.getElementById('scale-weight').value),
+                shear_weight: parseFloat(document.getElementById('shear-weight').value),
+                translation_weight: parseFloat(document.getElementById('translation-weight').value),
+                dino: false,  
+                timeE: false  
+            };
+            
+            if (!formData.caption.trim()) {
+                showError('Please fill in the animation description');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/start_training', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    currentTaskId = result.task_id;
+                    startProgressMonitoring();
+                    showProgress();
+                } else {
+                    showError(result.error || 'Training failed');
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            }
+        });
+
+        function startProgressMonitoring() {
+            if (eventSource) {
+                eventSource.close();
+            }
+            
+            eventSource = new EventSource(`/training_progress/${currentTaskId}`);
+            
+            eventSource.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                updateProgress(data);
+                
+                if (data.status === 'completed') {
+                    showResult();
+                    eventSource.close();
+                } else if (data.status === 'error') {
+                    showError('Training error: ' + (data.error || 'Unknown error'));
+                    hideProgress();
+                    eventSource.close();
+                }
+            };
+            
+            eventSource.onerror = function() {
+                showError('Progress monitoring connection error');
+            };
+        }
+
+        function updateProgress(data) {
+            if (data.progress !== undefined) {
+                document.getElementById('progress-fill').style.width = data.progress + '%';
+                document.getElementById('progress-percent').textContent = data.progress.toFixed(1);
+            }
+            
+            if (data.step !== undefined) {
+                document.getElementById('current-step').textContent = data.step;
+            }
+            
+            if (data.total_steps !== undefined) {
+                document.getElementById('total-steps').textContent = data.total_steps;
+            }
+            
+            if (data.loss !== undefined) {
+                document.getElementById('current-loss').textContent = data.loss.toFixed(4);
+            }
+            
+            if (data.elapsed_time !== undefined) {
+                document.getElementById('elapsed-time').textContent = (data.elapsed_time / 60).toFixed(1);
+            }
+            
+            if (data.estimated_remaining !== undefined) {
+                document.getElementById('remaining-time').textContent = (data.estimated_remaining / 60).toFixed(1);
+            }
+            
+            if (data.lr_points !== undefined) {
+                document.getElementById('learning-rate').textContent = data.lr_points.toExponential(2);
+            }
+        }
+
+        function showProgress() {
+            document.getElementById('progress-container').style.display = 'block';
+            document.getElementById('start-training-btn').disabled = true;
+            document.getElementById('start-training-btn').textContent = 'Training...';
+        }
+
+        function hideProgress() {
+            document.getElementById('progress-container').style.display = 'none';
+            document.getElementById('start-training-btn').disabled = false;
+            document.getElementById('start-training-btn').innerHTML = '<i class="bi bi-play-circle"></i> Start Training';
+        }
+
+        function showResult() {
+            hideProgress();
+            document.getElementById('result-container').style.display = 'block';
+            document.getElementById('result-gif').src = `/get_result_gif/${currentTaskId}`;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

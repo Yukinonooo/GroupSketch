@@ -1,0 +1,2424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG Animation Editor</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --success-color: #4cc9f0;
+        --danger-color: #f72585;
+        --warning-color: #f8961e;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      .path-item.grouped {
+        background-color: #e0e0e0;
+        opacity: 0.7;
+        text-decoration: line-through;
+      }
+
+      .path-item.selected {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 0 5px rgba(67, 97, 238, 0.5);
+      }
+
+      .draggable:hover {
+        cursor: move;
+        filter: brightness(1.1);
+      }
+
+      #svg-container .draggable {
+        transition: transform 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f2f5;
+        color: var(--dark-color);
+        line-height: 1.6;
+      }
+
+      .container {
+        width: 95%;
+        max-width: 1200px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+      }
+
+      h1,
+      h2 {
+        color: var(--dark-color);
+        text-align: center;
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+        color: var(--primary-color);
+      }
+
+      h1:after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: var(--primary-color);
+        margin: 10px auto;
+        border-radius: 2px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      h2:before,
+      h2:after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #ddd;
+        margin: 0 15px;
+      }
+
+      .section {
+        margin-bottom: 30px;
+        padding: 25px;
+        border-radius: var(--border-radius);
+        background-color: #fff;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+      }
+
+      .upload-section {
+        background: linear-gradient(145deg, #f0f8ff, #e6f7ff);
+        border-left: 4px solid var(--primary-color);
+      }
+
+      .group-section {
+        background: linear-gradient(145deg, #f5f5f5, #fafafa);
+        border-left: 4px solid var(--success-color);
+      }
+
+      .animation-section {
+        background: linear-gradient(145deg, #f0f7ff, #e6f2ff);
+        border-left: 4px solid var(--secondary-color);
+      }
+
+      .preview-section {
+        background: linear-gradient(145deg, #fff5f5, #fff0f0);
+        border-left: 4px solid var(--warning-color);
+      }
+
+      .svg-container {
+        position: relative;
+        min-height: 350px;
+        border: 2px dashed var(--primary-color);
+        margin: 25px auto;
+        overflow: visible;
+        background-color: #fff;
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 95%;
+        border-radius: var(--border-radius);
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+      }
+
+      .svg-container:hover {
+        border-color: var(--secondary-color);
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .svg-boundary {
+        stroke: var(--warning-color);
+        stroke-width: 1.5;
+        stroke-dasharray: 5, 5;
+        fill: none;
+        pointer-events: none;
+      }
+
+      .dimension-info {
+        background-color: var(--dark-color);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        margin: 0 auto 15px auto;
+        display: block;
+        font-size: 14px;
+        text-align: center;
+        width: fit-content;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 20px 0;
+        justify-content: center;
+      }
+
+      button {
+        padding: 10px 18px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      button:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      button.reset {
+        background-color: var(--danger-color);
+      }
+
+      button.reset:hover {
+        background-color: #e91e63;
+      }
+
+      button.secondary {
+        background-color: var(--success-color);
+      }
+
+      button.secondary:hover {
+        background-color: #3db8e0;
+      }
+
+      .path-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+        justify-content: center;
+        max-height: 200px;
+        overflow-y: auto;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: var(--border-radius);
+        border: 1px solid #eee;
+      }
+
+      .path-item {
+        padding: 8px 14px;
+        background-color: #f0f0f0;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 14px;
+        border: 1px solid #ddd;
+      }
+
+      .path-item:hover {
+        background-color: #e8e8e8;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .group-list {
+        margin: 20px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .group-item {
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: var(--border-radius);
+        border-left: 4px solid var(--success-color);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+      }
+
+      .group-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .frames-control {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin: 20px 0;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 15px;
+        border-radius: var(--border-radius);
+        border: 1px solid #eee;
+      }
+
+      .frame-preview {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 20px;
+        margin: 25px 0;
+      }
+
+      .frame-item {
+        text-align: center;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .frame-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      .frame-item img {
+        max-width: 100%;
+        border: 1px solid #eee;
+        border-radius: 4px;
+      }
+
+      .frame-item a {
+        display: inline-block;
+        padding: 6px 12px;
+        background-color: var(--primary-color);
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: var(--transition);
+      }
+
+      .frame-item a:hover {
+        background-color: var(--secondary-color);
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .file-input-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background-color: var(--light-color);
+        color: var(--dark-color);
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+      }
+
+      .file-input-label:hover {
+        background-color: #e9ecef;
+      }
+
+      .file-name {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      select {
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: var(--transition);
+        width: auto;
+      }
+
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        outline: none;
+      }
+
+      .mode-section {
+        margin: 25px 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .group-select {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .loading {
+        position: relative;
+        pointer-events: none;
+        opacity: 0.7;
+      }
+
+      .loading:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .step-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin: 30px 0;
+        position: relative;
+      }
+
+      .step-indicator:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #ddd;
+        transform: translateY(-50%);
+        z-index: 1;
+      }
+
+      .step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        position: relative;
+        z-index: 2;
+        transition: var(--transition);
+      }
+
+      .step.active {
+        border-color: var(--primary-color);
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .step.completed {
+        border-color: var(--success-color);
+        background: var(--success-color);
+        color: white;
+      }
+
+      .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 4px;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .toast.show {
+        opacity: 1;
+      }
+
+      .toast.success {
+        background: rgba(76, 175, 80, 0.9);
+      }
+
+      .toast.error {
+        background: rgba(244, 67, 54, 0.9);
+      }
+
+      .animation-controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .animation-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .animation-btn:hover {
+        background: var(--secondary-color);
+        transform: scale(1.1);
+      }
+
+      .timeline {
+        width: 100%;
+        height: 10px;
+        background: #eee;
+        border-radius: 5px;
+        margin: 20px 0;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .timeline-progress {
+        height: 100%;
+        background: var(--primary-color);
+        border-radius: 5px;
+        width: 0%;
+        transition: width 0.2s;
+      }
+
+      .timeline-marker {
+        width: 20px;
+        height: 20px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        left: 0%;
+        cursor: grab;
+      }
+
+      .timeline-marker:active {
+        cursor: grabbing;
+      }
+
+      .frame-counter {
+        text-align: center;
+        font-size: 14px;
+        margin: 10px 0;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          width: 100%;
+          padding: 15px;
+          margin: 0;
+          border-radius: 0;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        h2 {
+          font-size: 1.3rem;
+        }
+
+        .section {
+          padding: 15px;
+        }
+
+        .controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .frame-preview {
+          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        }
+
+        .step {
+          width: 30px;
+          height: 30px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>SVG Animation Editor</h1>
+
+      <div class="step-indicator">
+        <div class="step active" id="step-1">1</div>
+        <div class="step" id="step-2">2</div>
+        <div class="step" id="step-3">3</div>
+        <div class="step" id="step-4">4</div>
+      </div>
+
+      <div class="upload-section section">
+        <h2><i class="bi bi-cloud-upload"></i> Upload SVG File</h2>
+        <div class="controls">
+          <label class="file-input-label">
+            <i class="bi bi-file-earmark-image"></i> Select SVG File
+            <input type="file" id="svg-file" accept=".svg" />
+            <span class="file-name" id="file-name">No file selected</span>
+          </label>
+          <button id="upload-btn"><i class="bi bi-upload"></i> Upload</button>
+        </div>
+      </div>
+
+      <div class="svg-container" id="svg-container"></div>
+
+      <div class="mode-section">
+        <button id="group-mode-btn">
+          <i class="bi bi-grid-3x3"></i> Group Mode
+        </button>
+        <button id="animation-mode-btn">
+          <i class="bi bi-film"></i> Animation Mode
+        </button>
+        <button id="download-colored-svg-btn" class="secondary hidden">
+          <i class="bi bi-download"></i> Download Colored SVG
+        </button>
+      </div>
+
+      <div class="group-section section" id="group-section">
+        <h2><i class="bi bi-collection"></i> Path Grouping</h2>
+        <div class="path-list" id="path-list"></div>
+        <div class="controls">
+          <input type="text" id="group-name" placeholder="Group Name" />
+          <button id="create-group-btn">
+            <i class="bi bi-plus-circle"></i> Create Group
+          </button>
+        </div>
+        <div class="group-list" id="group-list"></div>
+      </div>
+
+      <div class="animation-section section hidden" id="animation-section">
+        <h2><i class="bi bi-record-circle"></i> Record Displacement</h2>
+        <div class="frames-control">
+          <label>Total Frames:</label>
+          <input type="number" id="total-frames" min="2" value="24" />
+          <label>Current Frame:</label>
+          <input type="number" id="current-frame" min="1" value="1" />
+          <button id="go-to-frame-btn">
+            <i class="bi bi-skip-forward"></i> Go to Frame
+          </button>
+          <button id="reset-position-btn" class="reset">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset Position
+          </button>
+        </div>
+        <div class="group-select">
+          <label>Select Group:</label>
+          <select id="group-select"></select>
+        </div>
+        <div class="controls">
+          <button id="record-position-btn">
+            <i class="bi bi-record-circle-fill"></i> Record Current Position
+          </button>
+          <button id="generate-animation-btn">
+            <i class="bi bi-magic"></i> Generate Animation
+          </button>
+        </div>
+
+        <div class="animation-preview hidden" id="animation-preview">
+          <h3>Animation Preview</h3>
+          <div class="animation-controls">
+            <div class="animation-btn" id="play-btn">
+              <i class="bi bi-play-fill"></i>
+            </div>
+            <div class="animation-btn" id="pause-btn">
+              <i class="bi bi-pause-fill"></i>
+            </div>
+            <div class="animation-btn" id="stop-btn">
+              <i class="bi bi-stop-fill"></i>
+            </div>
+          </div>
+          <div class="timeline" id="timeline">
+            <div class="timeline-progress" id="timeline-progress"></div>
+            <div class="timeline-marker" id="timeline-marker"></div>
+          </div>
+          <div class="frame-counter" id="frame-counter">Frame: 1 / 24</div>
+        </div>
+      </div>
+
+      <div class="preview-section section hidden" id="preview-section">
+        <h2><i class="bi bi-images"></i> Animation Preview</h2>
+        <div class="frame-preview" id="frame-preview"></div>
+        <div class="controls">
+          <button id="download-all-btn">
+            <i class="bi bi-file-zip"></i> Download All Frames (ZIP)
+          </button>
+          <button id="train-animation-btn" class="btn btn-primary" style="display: none;">
+            <i class="bi bi-robot"></i> AI Train Animation
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      // Global variables
+      let currentFileId = null;
+      let svgPaths = [];
+      let selectedPaths = [];
+      let groups = [];
+      let currentFrame = 1;
+      let totalFrames = 24;
+      let draggingGroup = null;
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let groupPositions = {};
+      let isAnimationPlaying = false;
+      let animationInterval = null;
+      let currentAnimationFrame = 1;
+
+      // DOM elements
+      const uploadBtn = document.getElementById("upload-btn");
+      const svgContainer = document.getElementById("svg-container");
+      const pathList = document.getElementById("path-list");
+      const createGroupBtn = document.getElementById("create-group-btn");
+      const groupNameInput = document.getElementById("group-name");
+      const groupList = document.getElementById("group-list");
+      const groupModeBtn = document.getElementById("group-mode-btn");
+      const animationModeBtn = document.getElementById("animation-mode-btn");
+      const downloadColoredSvgBtn = document.getElementById(
+        "download-colored-svg-btn"
+      );
+      const groupSection = document.getElementById("group-section");
+      const animationSection = document.getElementById("animation-section");
+      const totalFramesInput = document.getElementById("total-frames");
+      const currentFrameInput = document.getElementById("current-frame");
+      const goToFrameBtn = document.getElementById("go-to-frame-btn");
+      const resetPositionBtn = document.getElementById("reset-position-btn");
+      const groupSelect = document.getElementById("group-select");
+      const recordPositionBtn = document.getElementById("record-position-btn");
+      const generateAnimationBtn = document.getElementById(
+        "generate-animation-btn"
+      );
+      const previewSection = document.getElementById("preview-section");
+      const framePreview = document.getElementById("frame-preview");
+      const downloadAllBtn = document.getElementById("download-all-btn");
+      const trainAnimationBtn = document.getElementById("train-animation-btn"); // 添加这行
+      const fileNameDisplay = document.getElementById("file-name");
+      const fileInput = document.getElementById("svg-file");
+      const toast = document.getElementById("toast");
+      const steps = document.querySelectorAll(".step");
+      const animationPreview = document.getElementById("animation-preview");
+      const playBtn = document.getElementById("play-btn");
+      const pauseBtn = document.getElementById("pause-btn");
+      const stopBtn = document.getElementById("stop-btn");
+      const timeline = document.getElementById("timeline");
+      const timelineProgress = document.getElementById("timeline-progress");
+      const timelineMarker = document.getElementById("timeline-marker");
+      const frameCounter = document.getElementById("frame-counter");
+
+      // Event listeners
+      uploadBtn.addEventListener("click", uploadSVG);
+      createGroupBtn.addEventListener("click", createGroup);
+      groupModeBtn.addEventListener("click", switchToGroupMode);
+      animationModeBtn.addEventListener("click", switchToAnimationMode);
+      downloadColoredSvgBtn.addEventListener("click", downloadColoredSvg);
+      goToFrameBtn.addEventListener("click", goToFrame);
+      resetPositionBtn.addEventListener("click", resetPosition);
+      recordPositionBtn.addEventListener("click", recordPosition);
+      generateAnimationBtn.addEventListener("click", generateAnimation);
+      downloadAllBtn.addEventListener("click", downloadAllFrames);
+      trainAnimationBtn.addEventListener("click", goToTraining); // 添加这行
+      fileInput.addEventListener("change", updateFileName);
+      playBtn.addEventListener("click", playAnimation);
+      pauseBtn.addEventListener("click", pauseAnimation);
+      stopBtn.addEventListener("click", stopAnimation);
+      timeline.addEventListener("click", seekAnimation);
+      timelineMarker.addEventListener("mousedown", startDragTimeline);
+
+      // Notification system
+      function showToast(message, type = "default") {
+        toast.textContent = message;
+        toast.className = "toast show";
+        if (type) {
+          toast.classList.add(type);
+        }
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
+      // Update step indicator
+      function updateStepIndicator(step) {
+        steps.forEach((s, index) => {
+          if (index + 1 < step) {
+            s.classList.remove("active");
+            s.classList.add("completed");
+          } else if (index + 1 === step) {
+            s.classList.add("active");
+            s.classList.remove("completed");
+          } else {
+            s.classList.remove("active");
+            s.classList.remove("completed");
+          }
+        });
+      }
+
+      // Display file name
+      function updateFileName() {
+        if (fileInput.files.length > 0) {
+          fileNameDisplay.textContent = fileInput.files[0].name;
+        } else {
+          fileNameDisplay.textContent = "No file selected";
+        }
+      }
+
+      // Upload SVG file
+      function uploadSVG() {
+        if (!fileInput.files[0]) {
+          showToast("Please select an SVG file", "error");
+          return;
+        }
+
+        // Show loading state
+        uploadBtn.classList.add("loading");
+        uploadBtn.disabled = true;
+
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        fetch("/upload", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Server response error: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Restore button state
+            uploadBtn.classList.remove("loading");
+            uploadBtn.disabled = false;
+
+            if (data.error) {
+              showToast(data.error, "error");
+              return;
+            }
+
+            currentFileId = data.file_id;
+            svgPaths = data.paths;
+
+            // Render SVG
+            svgContainer.innerHTML = "";
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(svgNS, "svg");
+            svg.setAttribute("width", data.svg_width);
+            svg.setAttribute("height", data.svg_height);
+            svg.setAttribute(
+              "viewBox",
+              `0 0 ${data.svg_width} ${data.svg_height}`
+            );
+
+            // Add dimension info
+            const dimensionInfo = document.createElement("div");
+            dimensionInfo.className = "dimension-info";
+            dimensionInfo.textContent = `SVG canvas size: ${data.svg_width} × ${data.svg_height}`;
+
+            // Remove old dimension info
+            const oldDimensionInfo = document.querySelector(".dimension-info");
+            if (oldDimensionInfo) {
+              oldDimensionInfo.remove();
+            }
+
+            svgContainer.parentNode.insertBefore(dimensionInfo, svgContainer);
+
+            // Add SVG boundary box
+            const boundaryRect = document.createElementNS(svgNS, "rect");
+            boundaryRect.setAttribute("x", "0");
+            boundaryRect.setAttribute("y", "0");
+            boundaryRect.setAttribute("width", data.svg_width);
+            boundaryRect.setAttribute("height", data.svg_height);
+            boundaryRect.setAttribute("class", "svg-boundary");
+            svg.appendChild(boundaryRect);
+
+            // Add all path elements
+            svgPaths.forEach((path) => {
+              const pathElem = document.createElementNS(svgNS, "path");
+              pathElem.setAttribute("id", path.id);
+              pathElem.setAttribute("d", path.d);
+              if (path.style) pathElem.setAttribute("style", path.style);
+              if (path.fill) pathElem.setAttribute("fill", path.fill);
+              if (path.stroke) pathElem.setAttribute("stroke", path.stroke);
+              if (path["stroke-width"])
+                pathElem.setAttribute("stroke-width", path["stroke-width"]);
+
+              svg.appendChild(pathElem);
+            });
+
+            svgContainer.appendChild(svg);
+
+            // Show path list
+            renderPathList();
+
+            // Initialize group list
+            groupList.innerHTML = "";
+            groups = [];
+            selectedPaths = [];
+
+            // Switch to group mode
+            switchToGroupMode();
+
+            // Update step indicator
+            updateStepIndicator(2);
+
+            // Show success message
+            showToast("SVG uploaded successfully", "success");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            uploadBtn.classList.remove("loading");
+            uploadBtn.disabled = false;
+            showToast("Error uploading file: " + error.message, "error");
+          });
+      }
+
+      // Render path list
+      function renderPathList() {
+        pathList.innerHTML = "";
+
+        // Get all grouped path IDs
+        const allGroupedPaths = [];
+        groups.forEach((group) => {
+          allGroupedPaths.push(...group.path_ids);
+        });
+
+        // Add "Select All" and "Deselect All" buttons
+        const controlsDiv = document.createElement("div");
+        controlsDiv.className = "path-list-controls";
+        controlsDiv.style.marginBottom = "10px";
+        controlsDiv.style.textAlign = "center";
+
+        const selectAllBtn = document.createElement("button");
+        selectAllBtn.className = "secondary";
+        selectAllBtn.innerHTML =
+          '<i class="bi bi-check-all"></i> Select All Ungrouped Paths';
+        selectAllBtn.style.marginRight = "10px";
+        selectAllBtn.style.padding = "6px 12px";
+        selectAllBtn.style.fontSize = "14px";
+
+        selectAllBtn.addEventListener("click", () => {
+          // Select all ungrouped paths
+          svgPaths.forEach((path) => {
+            if (
+              !allGroupedPaths.includes(path.id) &&
+              !selectedPaths.includes(path.id)
+            ) {
+              togglePathSelection(
+                path.id,
+                document.querySelector(`.path-item[data-id="${path.id}"]`)
+              );
+            }
+          });
+        });
+
+        const deselectAllBtn = document.createElement("button");
+        deselectAllBtn.className = "reset";
+        deselectAllBtn.innerHTML = '<i class="bi bi-x-lg"></i> Deselect All';
+        deselectAllBtn.style.padding = "6px 12px";
+        deselectAllBtn.style.fontSize = "14px";
+
+        deselectAllBtn.addEventListener("click", () => {
+          // Cancel all selections
+          while (selectedPaths.length > 0) {
+            const pathId = selectedPaths[0];
+            togglePathSelection(
+              pathId,
+              document.querySelector(`.path-item[data-id="${pathId}"]`)
+            );
+          }
+        });
+
+        controlsDiv.appendChild(selectAllBtn);
+        controlsDiv.appendChild(deselectAllBtn);
+        pathList.appendChild(controlsDiv);
+
+        // Create search filter
+        const searchDiv = document.createElement("div");
+        searchDiv.className = "path-search";
+        searchDiv.style.marginBottom = "15px";
+        searchDiv.style.textAlign = "center";
+
+        const searchInput = document.createElement("input");
+        searchInput.type = "text";
+        searchInput.placeholder = "Search paths...";
+        searchInput.style.width = "100%";
+        searchInput.style.maxWidth = "300px";
+
+        searchInput.addEventListener("input", (e) => {
+          const search = e.target.value.toLowerCase();
+          document
+            .querySelectorAll(
+              ".path-item:not(.path-list-controls):not(.path-search)"
+            )
+            .forEach((item) => {
+              const pathId = item.dataset.id.toLowerCase();
+              if (pathId.includes(search)) {
+                item.style.display = "";
+              } else {
+                item.style.display = "none";
+              }
+            });
+        });
+
+        searchDiv.appendChild(searchInput);
+        pathList.appendChild(searchDiv);
+
+        // Add path items
+        const pathItemsContainer = document.createElement("div");
+        pathItemsContainer.className = "path-items-container";
+        pathItemsContainer.style.display = "flex";
+        pathItemsContainer.style.flexWrap = "wrap";
+        pathItemsContainer.style.gap = "10px";
+        pathItemsContainer.style.justifyContent = "center";
+
+        svgPaths.forEach((path) => {
+          const pathItem = document.createElement("div");
+          pathItem.className = "path-item";
+          pathItem.dataset.id = path.id;
+          pathItem.textContent = path.id;
+
+          // Mark grouped paths
+          if (allGroupedPaths.includes(path.id)) {
+            pathItem.classList.add("grouped");
+            pathItem.title = "This path is already grouped";
+
+            // 为已分组的路径添加对应组的颜色
+            // 查找该路径所属的组
+            for (let i = 0; i < groups.length; i++) {
+              if (groups[i].path_ids.includes(path.id)) {
+                // 使用相应组的颜色
+                const groupButtonColors = [
+                  "#4CAF50", // 绿色
+                  "#4361ee", // 蓝色
+                  "#f8961e", // 橙色
+                  "#7209b7", // 紫色
+                  "#f72585", // 粉色
+                  "#4cc9f0", // 青色
+                  "#3f37c9", // 深蓝色
+                  "#fb5607", // 红橙色
+                ];
+                const colorIndex = i % groupButtonColors.length;
+                const groupColor = groupButtonColors[colorIndex];
+
+                // 应用颜色到路径项
+                pathItem.style.backgroundColor = groupColor;
+                pathItem.style.color = "white";
+                pathItem.style.textShadow = "0px 1px 1px rgba(0,0,0,0.5)";
+                pathItem.style.opacity = "0.8";
+                break;
+              }
+            }
+          } else if (selectedPaths.includes(path.id)) {
+            pathItem.classList.add("selected");
+          }
+
+          // Only ungrouped paths can be selected
+          if (!allGroupedPaths.includes(path.id)) {
+            pathItem.addEventListener("click", () => {
+              togglePathSelection(path.id, pathItem);
+            });
+          }
+
+          pathItemsContainer.appendChild(pathItem);
+        });
+
+        pathList.appendChild(pathItemsContainer);
+
+        // Show path statistics
+        const statsDiv = document.createElement("div");
+        statsDiv.className = "path-stats";
+        statsDiv.style.marginTop = "15px";
+        statsDiv.style.fontSize = "14px";
+        statsDiv.style.textAlign = "center";
+        statsDiv.style.color = "#666";
+
+        const totalPaths = svgPaths.length;
+        const groupedPaths = allGroupedPaths.length;
+        const remainingPaths = totalPaths - groupedPaths;
+
+        statsDiv.innerHTML = `Total Paths: <strong>${totalPaths}</strong> | Grouped: <strong>${groupedPaths}</strong> | Ungrouped: <strong>${remainingPaths}</strong>`;
+
+        pathList.appendChild(statsDiv);
+      }
+
+      // Toggle path selection
+      function togglePathSelection(pathId, element) {
+        // Get all grouped path IDs
+        const allGroupedPaths = [];
+        groups.forEach((group) => {
+          allGroupedPaths.push(...group.path_ids);
+        });
+
+        // If the path is already grouped, do not allow selection
+        if (allGroupedPaths.includes(pathId)) {
+          return;
+        }
+
+        const index = selectedPaths.indexOf(pathId);
+        const svgPath = document.querySelector(`#${pathId}`);
+
+        if (index === -1) {
+          // Select the path
+          selectedPaths.push(pathId);
+          element.classList.add("selected");
+
+          // Change the color of the corresponding path in SVG to outline, without filling
+          if (svgPath) {
+            // Save the original color for restoration
+            svgPath.dataset.originalFill = svgPath.getAttribute("fill");
+            svgPath.dataset.originalStroke = svgPath.getAttribute("stroke");
+
+            // Set highlight
+            svgPath.setAttribute("fill", "none");
+            svgPath.setAttribute("stroke", "var(--primary-color)");
+            svgPath.setAttribute("stroke-width", "2");
+          }
+        } else {
+          // Cancel selection
+          selectedPaths.splice(index, 1);
+          element.classList.remove("selected");
+
+          // Restore original color
+          if (svgPath) {
+            if (svgPath.dataset.originalFill) {
+              svgPath.setAttribute("fill", svgPath.dataset.originalFill);
+            }
+            if (svgPath.dataset.originalStroke) {
+              svgPath.setAttribute("stroke", svgPath.dataset.originalStroke);
+            }
+          }
+        }
+
+        // Update the state of the create group button
+        updateCreateGroupButtonState();
+      }
+
+      // Update state of create group button
+      function updateCreateGroupButtonState() {
+        if (selectedPaths.length > 0) {
+          createGroupBtn.disabled = false;
+          createGroupBtn.innerHTML = `<i class="bi bi-plus-circle"></i> Create Group (${selectedPaths.length} paths)`;
+        } else {
+          createGroupBtn.disabled = true;
+          createGroupBtn.innerHTML = `<i class="bi bi-plus-circle"></i> Create Group`;
+        }
+      }
+
+      // Create group
+      function createGroup() {
+        if (!currentFileId) {
+          showToast("Please upload an SVG file first", "error");
+          return;
+        }
+
+        if (selectedPaths.length === 0) {
+          showToast("Please select at least one path", "error");
+          return;
+        }
+
+        const groupName = groupNameInput.value.trim();
+        if (!groupName) {
+          showToast("Please enter a group name", "error");
+          groupNameInput.focus();
+          return;
+        }
+
+        // Show loading state
+        createGroupBtn.classList.add("loading");
+        createGroupBtn.disabled = true;
+
+        fetch("/create_group", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            file_id: currentFileId,
+            group_name: groupName,
+            path_ids: selectedPaths,
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Server response error: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Restore button state
+            createGroupBtn.classList.remove("loading");
+            createGroupBtn.disabled = false;
+
+            if (data.error) {
+              showToast(data.error, "error");
+              return;
+            }
+
+            // Add to group list
+            const group = {
+              id: data.group_id,
+              name: groupName,
+              path_ids: [...selectedPaths],
+            };
+            groups.push(group);
+
+            // Update group list UI
+            updateGroupList();
+
+            // Remove grouped path elements from SVG
+            const svg = svgContainer.querySelector("svg");
+            selectedPaths.forEach((pathId) => {
+              const pathElem = svg.querySelector(`#${pathId}`);
+              if (pathElem) {
+                pathElem.style.display = "none"; // Hide instead of delete to maintain ID reference
+              }
+
+              // Also update the display status in the path list
+              const pathItemElem = pathList.querySelector(
+                `.path-item[data-id="${pathId}"]`
+              );
+              if (pathItemElem) {
+                pathItemElem.classList.add("grouped");
+
+                const groupIndex = groups.length - 1; 
+
+                
+                const groupButtonColors = [
+                  "#4CAF50", 
+                  "#4361ee", 
+                  "#f8961e", 
+                  "#7209b7", 
+                  "#f72585", 
+                  "#4cc9f0", 
+                  "#3f37c9", 
+                  "#fb5607", 
+                ];
+
+                const colorIndex = groupIndex % groupButtonColors.length;
+                const groupColor = groupButtonColors[colorIndex];
+
+                
+                pathItemElem.style.backgroundColor = groupColor;
+                pathItemElem.style.color = "white";
+                pathItemElem.style.textShadow = "0px 1px 1px rgba(0,0,0,0.5)";
+                pathItemElem.style.opacity = "0.8";
+              }
+            });
+
+            // Clear selection
+            selectedPaths = [];
+            renderPathList();
+            groupNameInput.value = "";
+
+            // Update state of create group button
+            updateCreateGroupButtonState();
+
+            // If at least one group has been created, activate the next step
+            if (groups.length > 0) {
+              updateStepIndicator(3);
+              animationModeBtn.disabled = false;
+            }
+
+            showToast(data.message, "success");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            createGroupBtn.classList.remove("loading");
+            createGroupBtn.disabled = false;
+            showToast("Error creating group: " + error.message, "error");
+          });
+      }
+
+      // Update group list
+      function updateGroupList() {
+        groupList.innerHTML = "";
+
+        if (groups.length === 0) {
+          const emptyMsg = document.createElement("div");
+          emptyMsg.className = "empty-message";
+          emptyMsg.style.textAlign = "center";
+          emptyMsg.style.padding = "20px";
+          emptyMsg.style.color = "#666";
+          emptyMsg.innerHTML =
+            '<i class="bi bi-exclamation-circle"></i><br>No groups yet<br>Please select paths from the list above and create a group';
+          groupList.appendChild(emptyMsg);
+          return;
+        }
+
+        
+        const groupButtonColors = [
+          "#4CAF50", 
+          "#4361ee", 
+          "#f8961e",
+          "#7209b7",
+          "#f72585", 
+          "#4cc9f0", 
+          "#3f37c9", 
+          "#fb5607", 
+        ];
+
+        groups.forEach((group, index) => {
+          const groupItem = document.createElement("div");
+          groupItem.className = "group-item";
+
+          
+          const colorIndex = index % groupButtonColors.length;
+          const groupColor = groupButtonColors[colorIndex];
+          groupItem.style.borderLeftColor = groupColor;
+
+          // Create group content
+          const groupHeader = document.createElement("div");
+          groupHeader.className = "group-header";
+          groupHeader.style.display = "flex";
+          groupHeader.style.justifyContent = "space-between";
+          groupHeader.style.alignItems = "center";
+          groupHeader.style.marginBottom = "8px";
+
+          const groupTitle = document.createElement("div");
+          groupTitle.className = "group-title";
+          groupTitle.innerHTML = `<strong style="color:${groupColor}">${group.name}</strong>`;
+
+          const groupId = document.createElement("div");
+          groupId.className = "group-id";
+          groupId.style.fontSize = "12px";
+          groupId.style.color = "#666";
+          groupId.textContent = `ID: ${group.id}`;
+
+          groupHeader.appendChild(groupTitle);
+          groupHeader.appendChild(groupId);
+
+          const groupInfo = document.createElement("div");
+          groupInfo.className = "group-info";
+          groupInfo.style.display = "flex";
+          groupInfo.style.alignItems = "center";
+          groupInfo.style.gap = "10px";
+          groupInfo.style.marginTop = "5px";
+
+          const pathCount = document.createElement("div");
+          pathCount.className = "path-count";
+          pathCount.style.fontSize = "14px";
+          pathCount.innerHTML = `<i class="bi bi-diagram-3"></i> ${group.path_ids.length} paths`;
+
+          const pathList = document.createElement("div");
+          pathList.className = "path-ids";
+          pathList.style.fontSize = "12px";
+          pathList.style.color = "#666";
+          pathList.style.display = "none"; // Default hidden
+          pathList.style.marginTop = "5px";
+          pathList.style.padding = "8px";
+          pathList.style.background = "#f5f5f5";
+          pathList.style.borderRadius = "4px";
+          pathList.style.maxHeight = "100px";
+          pathList.style.overflowY = "auto";
+
+          // Add path ID list
+          group.path_ids.forEach((pathId) => {
+            const pathItem = document.createElement("div");
+            pathItem.style.margin = "2px 0";
+            pathItem.textContent = pathId;
+            pathList.appendChild(pathItem);
+          });
+
+          // Add button to view path ID list
+          const togglePathsBtn = document.createElement("button");
+          togglePathsBtn.className = "secondary";
+          togglePathsBtn.style.padding = "4px 8px";
+          togglePathsBtn.style.fontSize = "12px";
+          togglePathsBtn.style.backgroundColor = groupColor;
+          togglePathsBtn.innerHTML = '<i class="bi bi-eye"></i> View Paths';
+          togglePathsBtn.addEventListener("click", () => {
+            if (pathList.style.display === "none") {
+              pathList.style.display = "block";
+              togglePathsBtn.innerHTML =
+                '<i class="bi bi-eye-slash"></i> Hide Paths';
+            } else {
+              pathList.style.display = "none";
+              togglePathsBtn.innerHTML = '<i class="bi bi-eye"></i> View Paths';
+            }
+          });
+
+          groupInfo.appendChild(pathCount);
+          groupInfo.appendChild(togglePathsBtn);
+
+          groupItem.appendChild(groupHeader);
+          groupItem.appendChild(groupInfo);
+          groupItem.appendChild(pathList);
+
+          groupList.appendChild(groupItem);
+        });
+
+        // Update group selection in animation mode
+        updateGroupSelect();
+
+        // Enable animation mode button
+        if (groups.length > 0) {
+          animationModeBtn.disabled = false;
+        } else {
+          animationModeBtn.disabled = true;
+        }
+      }
+
+      // Update group selection dropdown
+      function updateGroupSelect() {
+        groupSelect.innerHTML = "";
+
+        if (groups.length === 0) {
+          const option = document.createElement("option");
+          option.value = "";
+          option.textContent = "No available groups";
+          option.disabled = true;
+          option.selected = true;
+          groupSelect.appendChild(option);
+          return;
+        }
+
+        groups.forEach((group, index) => {
+          const option = document.createElement("option");
+          option.value = group.id;
+          option.textContent = `${group.name} (${group.path_ids.length} paths)`;
+          groupSelect.appendChild(option);
+
+          // Default select the first group
+          if (index === 0) {
+            option.selected = true;
+          }
+        });
+      }
+
+      // Switch to group mode
+      function switchToGroupMode() {
+        groupSection.classList.remove("hidden");
+        animationSection.classList.add("hidden");
+        previewSection.classList.add("hidden");
+        animationPreview.classList.add("hidden");
+        downloadColoredSvgBtn.classList.add("hidden");
+
+        // Update step indicator
+        updateStepIndicator(2);
+
+        // Update button state
+        groupModeBtn.disabled = true;
+        animationModeBtn.disabled = groups.length === 0;
+
+        // Highlight current mode button
+        groupModeBtn.classList.add("active");
+        animationModeBtn.classList.remove("active");
+
+        showToast("Switched to Group Mode", "success");
+      }
+
+      // Switch to animation mode
+      function switchToAnimationMode() {
+        if (groups.length === 0) {
+          showToast("Please create at least one group first", "error");
+          return;
+        }
+
+        // Enable/disable corresponding buttons
+        groupModeBtn.disabled = false;
+        animationModeBtn.disabled = true;
+
+        // Highlight current mode button
+        groupModeBtn.classList.remove("active");
+        animationModeBtn.classList.add("active");
+
+        // Show/hide corresponding parts
+        groupSection.classList.add("hidden");
+        animationSection.classList.remove("hidden");
+        previewSection.classList.add("hidden");
+        downloadColoredSvgBtn.classList.remove("hidden");
+
+        // Update step indicator
+        updateStepIndicator(3);
+
+        // Update group selection
+        updateGroupSelect();
+
+        // Initialize draggable groups
+        initDraggableGroups();
+
+        showToast("Switched to Animation Mode", "success");
+      }
+
+      // Initialize draggable groups
+      function initDraggableGroups() {
+        // Show loading state
+        animationModeBtn.classList.add("loading");
+
+
+        const groupColors = [
+          "#4CAF50", 
+          "#4361ee",
+          "#f8961e",
+          "#7209b7", 
+          "#f72585", 
+          "#4cc9f0", 
+          "#3f37c9", 
+          "#fb5607", 
+        ];
+
+        // Re-render SVG, adding group and drag functionality
+        fetch(`/get_groups?file_id=${currentFileId}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Server response error: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Restore button state
+            animationModeBtn.classList.remove("loading");
+
+            if (data.error) {
+              showToast(data.error, "error");
+              return;
+            }
+
+            groups = data.groups;
+            groupPositions = {};
+
+            // Update SVG, organizing paths into groups
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = svgContainer.querySelector("svg");
+
+            // Clear existing content
+            svg.innerHTML = "";
+
+            // Create g elements for each group and set different colors
+            groups.forEach((group, index) => {
+              const g = document.createElementNS(svgNS, "g");
+              g.setAttribute("id", group.id);
+              g.setAttribute("class", group.name);
+              g.classList.add("draggable");
+
+              // Set border color of the group, using modulo operation to ensure colors don't overflow
+              const groupColor = groupColors[index % groupColors.length];
+              g.setAttribute("stroke", groupColor);
+
+              // Add group label
+              const textLabel = document.createElementNS(svgNS, "text");
+              textLabel.setAttribute("x", "0");
+              textLabel.setAttribute("y", "0");
+              textLabel.setAttribute("fill", groupColor);
+              textLabel.setAttribute("font-size", "12");
+              textLabel.setAttribute("font-weight", "bold");
+              textLabel.setAttribute("text-anchor", "middle");
+              textLabel.setAttribute("dominant-baseline", "hanging");
+              textLabel.setAttribute("pointer-events", "none");
+              textLabel.textContent = group.name;
+              g.appendChild(textLabel);
+
+              // Set outline effect for each path in the group, without filling
+              group.path_ids.forEach((pathId) => {
+                const pathInfo = svgPaths.find((p) => p.id === pathId);
+                if (pathInfo) {
+                  const path = document.createElementNS(svgNS, "path");
+                  path.setAttribute("id", pathInfo.id);
+                  path.setAttribute("d", pathInfo.d);
+
+                  // Preserve original style
+                  if (pathInfo.style)
+                    path.setAttribute("style", pathInfo.style);
+                  // Set outline color, without setting fill color
+                  path.setAttribute("fill", "none");
+                  path.setAttribute("stroke", groupColor);
+                  path.setAttribute(
+                    "stroke-width",
+                    pathInfo["stroke-width"] || "1.5"
+                  );
+
+                  g.appendChild(path);
+                }
+              });
+
+              // Add drag event
+              g.addEventListener("mousedown", startDrag);
+
+              // Add touch support
+              g.addEventListener("touchstart", startDragTouch);
+
+              // Add drag tooltip
+              g.setAttribute("title", "Drag to move group");
+
+              svg.appendChild(g);
+
+              // Initialize position information
+              groupPositions[group.id] = {};
+            });
+
+            // Get width and height of SVG
+            const svgWidth = svg.getAttribute("width");
+            const svgHeight = svg.getAttribute("height");
+
+            // Re-add boundary box, ensuring it's visible in animation mode
+            const boundaryRect = document.createElementNS(svgNS, "rect");
+            boundaryRect.setAttribute("x", "0");
+            boundaryRect.setAttribute("y", "0");
+            boundaryRect.setAttribute("width", svgWidth);
+            boundaryRect.setAttribute("height", svgHeight);
+            boundaryRect.setAttribute("class", "svg-boundary");
+            svg.appendChild(boundaryRect);
+
+            // Update dimension indicator
+            let dimensionInfo = document.querySelector(".dimension-info");
+            if (!dimensionInfo) {
+              dimensionInfo = document.createElement("div");
+              dimensionInfo.className = "dimension-info";
+              svgContainer.parentNode.insertBefore(dimensionInfo, svgContainer);
+            }
+            dimensionInfo.textContent = `SVG Size: ${svgWidth} × ${svgHeight}`;
+
+            // Update group selection
+            updateGroupSelect();
+
+            // Show animation controls
+            animationPreview.classList.remove("hidden");
+
+            // Update frame counter
+            frameCounter.textContent = `Frame: ${currentFrame} / ${totalFrames}`;
+
+            showToast(
+              "Groups loaded successfully, you can drag groups and record positions",
+              "success"
+            );
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            animationModeBtn.classList.remove("loading");
+            showToast(
+              "Error getting group information: " + error.message,
+              "error"
+            );
+          });
+      }
+
+      // Start dragging (mouse)
+      function startDrag(event) {
+        if (currentFrame === 1) {
+          showToast(
+            "The first frame is the original position and cannot be moved. Please select another frame.",
+            "error"
+          );
+          return;
+        }
+
+        const g = event.currentTarget;
+        draggingGroup = g;
+
+        // Get current position
+        const transform = g.getAttribute("transform");
+        let currentX = 0;
+        let currentY = 0;
+
+        if (transform) {
+          const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+          if (match) {
+            currentX = parseFloat(match[1]);
+            currentY = parseFloat(match[2]);
+          }
+        }
+
+        dragStartX = event.clientX - currentX;
+        dragStartY = event.clientY - currentY;
+
+        // Add styles for dragging
+        g.style.opacity = "0.8";
+        g.style.cursor = "grabbing";
+
+        document.addEventListener("mousemove", drag);
+        document.addEventListener("mouseup", stopDrag);
+
+        // Prevent event bubbling and default behavior
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // Start dragging (touch)
+      function startDragTouch(event) {
+        if (currentFrame === 1) {
+          showToast(
+            "The first frame is the original position and cannot be moved. Please select another frame.",
+            "error"
+          );
+          return;
+        }
+
+        if (event.touches.length !== 1) return;
+
+        const g = event.currentTarget;
+        draggingGroup = g;
+
+        // Get current position
+        const transform = g.getAttribute("transform");
+        let currentX = 0;
+        let currentY = 0;
+
+        if (transform) {
+          const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+          if (match) {
+            currentX = parseFloat(match[1]);
+            currentY = parseFloat(match[2]);
+          }
+        }
+
+        const touch = event.touches[0];
+        dragStartX = touch.clientX - currentX;
+        dragStartY = touch.clientY - currentY;
+
+        // Add styles for dragging
+        g.style.opacity = "0.8";
+
+        document.addEventListener("touchmove", dragTouch);
+        document.addEventListener("touchend", stopDragTouch);
+
+        // Prevent event bubbling and default behavior
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // Dragging process (mouse)
+      function drag(event) {
+        if (!draggingGroup) return;
+
+        const x = event.clientX - dragStartX;
+        const y = event.clientY - dragStartY;
+
+        draggingGroup.setAttribute("transform", `translate(${x}, ${y})`);
+
+        // Prevent event bubbling and default behavior
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // Dragging process (touch)
+      function dragTouch(event) {
+        if (!draggingGroup || event.touches.length !== 1) return;
+
+        const touch = event.touches[0];
+        const x = touch.clientX - dragStartX;
+        const y = touch.clientY - dragStartY;
+
+        draggingGroup.setAttribute("transform", `translate(${x}, ${y})`);
+
+        // Prevent event bubbling and default behavior
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // Stop dragging (mouse)
+      function stopDrag(event) {
+        if (!draggingGroup) return;
+
+        // Restore styles
+        draggingGroup.style.opacity = "";
+        draggingGroup.style.cursor = "";
+
+        draggingGroup = null;
+        document.removeEventListener("mousemove", drag);
+        document.removeEventListener("mouseup", stopDrag);
+
+        // Prevent event bubbling
+        event.stopPropagation();
+      }
+
+      // Stop dragging (touch)
+      function stopDragTouch(event) {
+        if (!draggingGroup) return;
+
+        // Restore styles
+        draggingGroup.style.opacity = "";
+
+        draggingGroup = null;
+        document.removeEventListener("touchmove", dragTouch);
+        document.removeEventListener("touchend", stopDragTouch);
+
+        // Prevent event bubbling
+        event.stopPropagation();
+      }
+
+      // Start dragging timeline marker
+      function startDragTimeline(event) {
+        const timeline = document.getElementById("timeline");
+        const timelineRect = timeline.getBoundingClientRect();
+        const maxWidth = timelineRect.width;
+
+        function dragTimelineMarker(e) {
+          const x = Math.max(
+            0,
+            Math.min(e.clientX - timelineRect.left, maxWidth)
+          );
+          const percent = (x / maxWidth) * 100;
+          timelineProgress.style.width = `${percent}%`;
+          timelineMarker.style.left = `${percent}%`;
+
+          // Calculate and update current frame
+          const frame = Math.max(
+            1,
+            Math.min(Math.round((percent / 100) * totalFrames), totalFrames)
+          );
+          currentAnimationFrame = frame;
+          frameCounter.textContent = `Frame: ${frame} / ${totalFrames}`;
+
+          // Update position
+          updatePositionsForFrame(frame);
+        }
+
+        function stopDragTimelineMarker() {
+          document.removeEventListener("mousemove", dragTimelineMarker);
+          document.removeEventListener("mouseup", stopDragTimelineMarker);
+        }
+
+        document.addEventListener("mousemove", dragTimelineMarker);
+        document.addEventListener("mouseup", stopDragTimelineMarker);
+
+        dragTimelineMarker(event);
+      }
+
+      // Click on timeline
+      function seekAnimation(event) {
+        if (event.target === timelineMarker) return;
+
+        const timelineRect = timeline.getBoundingClientRect();
+        const maxWidth = timelineRect.width;
+        const x = Math.max(
+          0,
+          Math.min(event.clientX - timelineRect.left, maxWidth)
+        );
+        const percent = (x / maxWidth) * 100;
+
+        timelineProgress.style.width = `${percent}%`;
+        timelineMarker.style.left = `${percent}%`;
+
+        // Calculate and update current frame
+        const frame = Math.max(
+          1,
+          Math.min(Math.round((percent / 100) * totalFrames), totalFrames)
+        );
+        currentAnimationFrame = frame;
+        frameCounter.textContent = `Frame: ${frame} / ${totalFrames}`;
+
+        // Update position
+        updatePositionsForFrame(frame);
+      }
+
+      // Play animation
+      function playAnimation() {
+        if (isAnimationPlaying) return;
+
+        isAnimationPlaying = true;
+        playBtn.style.backgroundColor = "var(--secondary-color)";
+        pauseBtn.style.backgroundColor = "";
+        stopBtn.style.backgroundColor = "";
+
+        // If at the end, start from the beginning
+        if (currentAnimationFrame >= totalFrames) {
+          currentAnimationFrame = 1;
+        }
+
+        animationInterval = setInterval(() => {
+          
+          const percent = (currentAnimationFrame / totalFrames) * 100;
+          timelineProgress.style.width = `${percent}%`;
+          timelineMarker.style.left = `${percent}%`;
+
+          
+          frameCounter.textContent = `帧: ${currentAnimationFrame} / ${totalFrames}`;
+
+          
+          updatePositionsForFrame(currentAnimationFrame);
+
+          
+          currentAnimationFrame++;
+
+          
+          if (currentAnimationFrame > totalFrames) {
+            pauseAnimation();
+          }
+        }, 1000 / 24); 
+      }
+
+      
+      function pauseAnimation() {
+        if (!isAnimationPlaying) return;
+
+        isAnimationPlaying = false;
+        clearInterval(animationInterval);
+
+        playBtn.style.backgroundColor = "";
+        pauseBtn.style.backgroundColor = "var(--secondary-color)";
+        stopBtn.style.backgroundColor = "";
+      }
+
+      
+      function stopAnimation() {
+        isAnimationPlaying = false;
+        clearInterval(animationInterval);
+
+        
+        currentAnimationFrame = 1;
+        timelineProgress.style.width = "0%";
+        timelineMarker.style.left = "0%";
+        frameCounter.textContent = `帧: ${currentAnimationFrame} / ${totalFrames}`;
+
+       
+        updatePositionsForFrame(currentAnimationFrame);
+
+        playBtn.style.backgroundColor = "";
+        pauseBtn.style.backgroundColor = "";
+        stopBtn.style.backgroundColor = "var(--secondary-color)";
+      }
+
+      
+      function goToFrame() {
+        const frame = parseInt(currentFrameInput.value);
+        if (isNaN(frame) || frame < 1) {
+          showToast("Please enter a valid frame number", "error");
+          return;
+        }
+
+        currentFrame = frame;
+
+       
+        updatePositionsForFrame(currentFrame);
+
+        
+        currentAnimationFrame = frame;
+        const percent = (currentAnimationFrame / totalFrames) * 100;
+        timelineProgress.style.width = `${percent}%`;
+        timelineMarker.style.left = `${percent}%`;
+        frameCounter.textContent = `Frame: ${currentAnimationFrame} / ${totalFrames}`;
+
+        showToast(`Jumped to frame ${frame}`, "success");
+      }
+
+      
+      function updatePositionsForFrame(frame) {
+        const svg = svgContainer.querySelector("svg");
+
+        groups.forEach((group) => {
+          const g = svg.querySelector(`#${group.id}`);
+          if (!g) return;
+
+          if (frame === 1) {
+            
+            g.removeAttribute("transform");
+          } else if (
+            groupPositions[group.id] &&
+            groupPositions[group.id][frame]
+          ) {
+            
+            const pos = groupPositions[group.id][frame];
+            g.setAttribute("transform", `translate(${pos.x}, ${pos.y})`);
+          } else {
+           
+            const frames = Object.keys(groupPositions[group.id] || {}).map(
+              Number
+            );
+
+            if (frames.length > 0) {
+              
+              const prevFrames = frames.filter((f) => f < frame);
+              const nextFrames = frames.filter((f) => f > frame);
+
+              if (prevFrames.length > 0 && nextFrames.length > 0) {
+              
+                const prevFrame = Math.max(...prevFrames);
+                const nextFrame = Math.min(...nextFrames);
+
+                const prevPos = groupPositions[group.id][prevFrame];
+                const nextPos = groupPositions[group.id][nextFrame];
+
+                const t = (frame - prevFrame) / (nextFrame - prevFrame);
+                const x = prevPos.x + t * (nextPos.x - prevPos.x);
+                const y = prevPos.y + t * (nextPos.y - prevPos.y);
+
+                g.setAttribute("transform", `translate(${x}, ${y})`);
+              } else if (prevFrames.length > 0) {
+                
+                const prevFrame = Math.max(...prevFrames);
+                const pos = groupPositions[group.id][prevFrame];
+                g.setAttribute("transform", `translate(${pos.x}, ${pos.y})`);
+              } else if (nextFrames.length > 0) {
+               
+                const nextFrame = Math.min(...nextFrames);
+                const pos = groupPositions[group.id][nextFrame];
+                g.setAttribute("transform", `translate(${pos.x}, ${pos.y})`);
+              }
+            }
+          }
+        });
+      }
+
+     
+      function resetPosition() {
+        const selectedGroupId = groupSelect.value;
+        if (!selectedGroupId) {
+          showToast("Please select a group", "error");
+          return;
+        }
+
+        if (currentFrame === 1) {
+          showToast(
+            "The first frame is the original position, no need to reset",
+            "error"
+          );
+          return;
+        }
+
+        
+        resetPositionBtn.classList.add("loading");
+        resetPositionBtn.disabled = true;
+
+        const svg = svgContainer.querySelector("svg");
+        const g = svg.querySelector(`#${selectedGroupId}`);
+
+        if (g && currentFrame > 1) {
+          
+          g.removeAttribute("transform");
+
+          
+          if (
+            groupPositions[selectedGroupId] &&
+            groupPositions[selectedGroupId][currentFrame]
+          ) {
+            delete groupPositions[selectedGroupId][currentFrame];
+          }
+
+        
+          setTimeout(() => {
+            resetPositionBtn.classList.remove("loading");
+            resetPositionBtn.disabled = false;
+            showToast(
+              `Reset position of group "${selectedGroupId}" at frame ${currentFrame}`,
+              "success"
+            );
+          }, 300);
+        } else {
+          resetPositionBtn.classList.remove("loading");
+          resetPositionBtn.disabled = false;
+          showToast("Failed to reset position", "error");
+        }
+      }
+
+     
+      function recordPosition() {
+        const selectedGroupId = groupSelect.value;
+        if (!selectedGroupId) {
+          showToast("Please select a group", "error");
+          return;
+        }
+
+        if (currentFrame === 1) {
+          showToast(
+            "The first frame is the original position and cannot be recorded. Please select another frame.",
+            "error"
+          );
+          return;
+        }
+
+      
+        recordPositionBtn.classList.add("loading");
+        recordPositionBtn.disabled = true;
+
+        const svg = svgContainer.querySelector("svg");
+        const g = svg.querySelector(`#${selectedGroupId}`);
+
+        if (g) {
+        
+          const transform = g.getAttribute("transform");
+          let x = 0;
+          let y = 0;
+
+          if (transform) {
+            const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+            if (match) {
+              x = parseFloat(match[1]);
+              y = parseFloat(match[2]);
+            }
+          }
+
+         
+          const position = { x, y };
+
+          fetch("/record_position", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              file_id: currentFileId,
+              group_id: selectedGroupId,
+              frame: currentFrame,
+              position: position,
+            }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`Server response error: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then((data) => {
+             
+              recordPositionBtn.classList.remove("loading");
+              recordPositionBtn.disabled = false;
+
+              if (data.error) {
+                showToast(data.error, "error");
+                return;
+              }
+
+              
+              if (!groupPositions[selectedGroupId]) {
+                groupPositions[selectedGroupId] = {};
+              }
+              groupPositions[selectedGroupId][currentFrame] = position;
+
+              showToast(
+                `Recorded position of group "${selectedGroupId}" at frame ${currentFrame}`,
+                "success"
+              );
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              recordPositionBtn.classList.remove("loading");
+              recordPositionBtn.disabled = false;
+              showToast("Error recording position: " + error.message, "error");
+            });
+        } else {
+          recordPositionBtn.classList.remove("loading");
+          recordPositionBtn.disabled = false;
+          showToast(
+            "Failed to record position, group element not found",
+            "error"
+          );
+        }
+      }
+
+     
+      function generateAnimation() {
+        if (!currentFileId) {
+          showToast("Please upload an SVG file first", "error");
+          return;
+        }
+
+        
+        generateAnimationBtn.classList.add("loading");
+        generateAnimationBtn.disabled = true;
+
+        totalFrames = parseInt(totalFramesInput.value);
+        if (isNaN(totalFrames) || totalFrames < 2) {
+          showToast(
+            "Please enter a valid number of frames (at least 2)",
+            "error"
+          );
+          generateAnimationBtn.classList.remove("loading");
+          generateAnimationBtn.disabled = false;
+          return;
+        }
+
+        fetch("/generate_animation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            file_id: currentFileId,
+            total_frames: totalFrames,
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Server response error: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+           
+            generateAnimationBtn.classList.remove("loading");
+            generateAnimationBtn.disabled = false;
+
+            if (data.error) {
+              showToast(data.error, "error");
+              return;
+            }
+
+        
+            previewSection.classList.remove("hidden");
+
+         
+            updateStepIndicator(4);
+
+      
+            framePreview.innerHTML = "";
+
+        
+            const loadingMsg = document.createElement("div");
+            loadingMsg.textContent = "Loading previews...";
+            loadingMsg.style.padding = "20px";
+            loadingMsg.style.textAlign = "center";
+            framePreview.appendChild(loadingMsg);
+
+           
+            let loadedImages = 0;
+            const totalImages = data.frames.length;
+
+        
+            setTimeout(() => {
+              framePreview.innerHTML = "";
+
+        
+              data.frames.forEach((frame, index) => {
+                const frameItem = document.createElement("div");
+                frameItem.className = "frame-item";
+
+                const img = document.createElement("img");
+                img.src = `/download/${frame.path}`;
+                img.alt = `Frame ${frame.frame}`;
+                img.addEventListener("load", () => {
+                  loadedImages++;
+
+           
+                  if (loadedImages === totalImages) {
+                    showToast("All frame previews loaded", "success");
+                  }
+                });
+                img.addEventListener("error", () => {
+                  loadedImages++;
+                  img.src =
+                    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJmZWF0aGVyIGZlYXRoZXItYWxlcnQtdHJpYW5nbGUiPjxwYXRoIGQ9Ik0xMC4yOSAzLjg2TDEuODIgMThhMiAyIDAgMCAwIDEuNzEgM2gxNi45NGEyIDIgMCAwIDAgMS43MS0zTDEzLjcxIDMuODZhMiAyIDAgMCAwLTMuNDIgMHoiPjwvcGF0aD48bGluZSB4MT0iMTIiIHkxPSI5IiB4Mj0iMTIiIHkyPSIxMyI+PC9saW5lPjxsaW5lIHgxPSIxMiIgeTE9IjE3IiB4Mj0iMTIuMDEiIHkyPSIxNyI+PC9saW5lPjwvc3ZnPg==";
+                  showToast(`Frame ${frame.frame} failed to load`, "error");
+                });
+
+                const label = document.createElement("div");
+                label.className = "frame-label";
+                label.textContent = `Frame ${frame.frame}`;
+
+                const downloadLink = document.createElement("a");
+                downloadLink.href = `/download/${frame.path}`;
+                downloadLink.download = frame.filename;
+                downloadLink.textContent = "Download";
+                downloadLink.className = "download-link";
+
+                frameItem.appendChild(img);
+                frameItem.appendChild(label);
+                frameItem.appendChild(downloadLink);
+
+                framePreview.appendChild(frameItem);
+              });
+            }, 500);
+
+           
+            downloadAllBtn.textContent = `Download All ${totalFrames} Frames (ZIP)`;
+   
+            showTrainingButton();
+    
+            showToast("Animation generated successfully", "success");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            generateAnimationBtn.classList.remove("loading");
+            generateAnimationBtn.disabled = false;
+            showToast("Error generating animation: " + error.message, "error");
+          });
+      }
+
+      function downloadAllFrames() {
+        if (!currentFileId) {
+          showToast("No frames available for download", "error");
+          return;
+        }
+
+
+        downloadAllBtn.classList.add("loading");
+        downloadAllBtn.disabled = true;
+        downloadAllBtn.innerHTML =
+          '<i class="bi bi-cloud-download"></i> Preparing download...';
+
+
+        showToast("Preparing download, please wait...", "success");
+
+ 
+        window.location.href = `/download_all/${currentFileId}`;
+
+
+        setTimeout(() => {
+          downloadAllBtn.classList.remove("loading");
+          downloadAllBtn.disabled = false;
+          downloadAllBtn.innerHTML = `<i class="bi bi-file-zip"></i> Download All ${totalFrames} Frames (ZIP)`;
+          showToast("Download started", "success");
+        }, 2000);
+      }
+
+     
+      function downloadColoredSvg() {
+        if (!currentFileId || groups.length === 0) {
+          showToast(
+            "Please upload an SVG file and create groups first",
+            "error"
+          );
+          return;
+        }
+
+
+        downloadColoredSvgBtn.classList.add("loading");
+        downloadColoredSvgBtn.disabled = true;
+
+        try {
+  
+          const svg = svgContainer.querySelector("svg");
+          if (!svg) {
+            showToast("SVG element not found", "error");
+            downloadColoredSvgBtn.classList.remove("loading");
+            downloadColoredSvgBtn.disabled = false;
+            return;
+          }
+
+      
+          const clonedSvg = svg.cloneNode(true);
+
+  
+          const serializer = new XMLSerializer();
+          let svgString = serializer.serializeToString(clonedSvg);
+
+   
+          svgString =
+            '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n' +
+            '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
+            svgString;
+
+  
+          const blob = new Blob([svgString], { type: "image/svg+xml" });
+
+     
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "colored_groups.svg";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+   
+          URL.revokeObjectURL(link.href);
+
+  
+          setTimeout(() => {
+            downloadColoredSvgBtn.classList.remove("loading");
+            downloadColoredSvgBtn.disabled = false;
+            showToast("SVG downloaded successfully", "success");
+          }, 500);
+        } catch (error) {
+          console.error("Error downloading SVG:", error);
+          downloadColoredSvgBtn.classList.remove("loading");
+          downloadColoredSvgBtn.disabled = false;
+          showToast("Error downloading SVG: " + error.message, "error");
+        }
+      }
+
+      
+      document.addEventListener("DOMContentLoaded", function () {
+  
+        animationModeBtn.disabled = true;
+
+
+        updateCreateGroupButtonState();
+
+
+        uploadBtn.classList.remove("loading");
+        uploadBtn.disabled = false;
+      });
+
+
+      function showTrainingButton() {
+        if (currentFileId) {
+          trainAnimationBtn.style.display = 'inline-block';
+        }
+      }
+      
+
+      function goToTraining() {
+        if (!currentFileId) {
+          showToast("No file available for training", "error");
+          return;
+        }
+        
+      
+        window.location.href = `/training_form/${currentFileId}`;
+      }
+    </script>
+  </body>
+</html>

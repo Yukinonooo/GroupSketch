@@ -1,0 +1,225 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Microsoft YaHei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+    padding: 0 20px;
+}
+
+
+header {
+    text-align: center;
+    padding: 40px 0;
+    margin-bottom: 30px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+
+.gallery-section {
+    margin-bottom: 50px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.gallery-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+}
+
+
+.gallery-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 100%;
+}
+
+.gallery-item {
+    flex: 0 0 100%;
+    padding: 20px;
+}
+
+.prompt-box {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f7f9fc;
+    border-radius: 5px;
+    border-left: 4px solid #3498db;
+}
+
+.prompt-box h3 {
+    margin-bottom: 10px;
+    color: #3498db;
+}
+
+.content-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.sketch-container, .gif-container {
+    flex: 1;
+    min-width: 300px;
+}
+
+.sketch-container h3, .gif-container h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.sketch-img, .result-gif {
+    width: 100%;
+    height: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+
+.slider-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.prev-btn, .next-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.prev-btn:hover, .next-btn:hover {
+    background-color: #2980b9;
+}
+
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.dot {
+    height: 12px;
+    width: 12px;
+    background-color: #bbb;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: #3498db;
+}
+
+
+.ablation-container {
+    padding: 20px;
+}
+
+.ablation-item {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.ablation-results h3 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.ablation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.ablation-cell {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.ablation-cell:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.ablation-cell p {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.ablation-gif {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+}
+
+
+@media (max-width: 768px) {
+    .content-box {
+        flex-direction: column;
+    }
+    
+    .ablation-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    header {
+        padding: 20px 0;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .gallery-section h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ablation-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .gallery-section {
+        padding: 15px;
+    }
+} 
