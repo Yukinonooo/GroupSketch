@@ -56,16 +56,16 @@ python app.py
 
 
 2. **Upload your sketch**: 
-   - Support formats: SVG, PNG, JPG
-   - Automatic SVG conversion for raster images
+  - Support formats: SVG, PNG, JPG
+  - Automatic SVG conversion for raster images
 
 3. **Define object groups**:
-   - Use the interactive Canvas to group related objects
-   - Set motion trajectories for each group
+  - Use the interactive Canvas to group related objects
+  - Set motion trajectories for each group
 
 4. **Generate animation**:
-   - Configure animation parameters (duration, frames, etc.)
-   - Click "Generate Animation" to start processing
+  - Configure animation parameters (duration, frames, etc.)
+  - Click "Generate Animation" to start processing
 
 
 ## 📊 Features
