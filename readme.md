@@ -9,6 +9,11 @@
 
 This repository contains the official implementation of our ACM MM 2025 paper, "Multi-Object Sketch Animation with Grouping and Motion Trajectory Priors." 
 
+## 🔥 Latest Update
+
+- _2025.08_: 🎉 We released the code for [GroupSketch](https://hjc-owo.github.io/GroupSketchProject/). 🎉
+- _2025.07_: 🎉 GroupSketch accepted by ACM MM 2025. 🎉
+
 ## 🌟 Highlights
 
 - **Novel Two-Stage Pipeline**: Combines user-defined grouping with motion trajectory priors for multi-object sketch animation
@@ -16,9 +21,6 @@ This repository contains the official implementation of our ACM MM 2025 paper, "
 - **Superior Performance**: Significantly outperforms existing methods in visual quality and temporal consistency for complex multi-object scenarios
 - **Interactive Web Interface**: User-friendly Flask-based web application for easy sketch animation creation
 
-## More Results
-
-See [GroupSketch Web](https://hjc-owo.github.io/GroupSketchProject/)
 
 ## 🚀 Getting Started
 
