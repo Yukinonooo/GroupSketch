@@ -44,10 +44,6 @@ git submodule update --init --recursive
 python setup.py install
 ```
 
-4. **Install additional dependencies**:
-```bash
-pip install pydiffvg flask tqdm pillow
-```
 
 ## 🎨 Usage
 
