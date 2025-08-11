@@ -9,6 +9,10 @@ import time
 from flask import Flask, request, jsonify, render_template, send_from_directory, Response, send_file
 import xml.etree.ElementTree as ET
 from xml.etree import ElementTree as etree
+
+# 获取项目根目录，确保可移植性
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 def get_center_of_mass(shapes):
     """Compute the centroid of all shapes.
     Args:
@@ -139,7 +143,9 @@ def resize_canvas(svg_path, target_width=256, target_height=256, obj_scale=1, ta
     # Serialize scene and save new SVG
     scene_args = pydiffvg.RenderFunction.serialize_scene(target_width, target_height, shapes_init, shape_groups_init)
     render = pydiffvg.RenderFunction.apply
-    pydiffvg.save_svg(f"uploads/scaled.svg", target_width, target_height, shapes_init, shape_groups_init)
+    uploads_dir = os.path.join(PROJECT_ROOT, "uploads")
+    os.makedirs(uploads_dir, exist_ok=True)
+    pydiffvg.save_svg(os.path.join(uploads_dir, "scaled.svg"), target_width, target_height, shapes_init, shape_groups_init)
     
     
 def process_file(svg_path, target_width=256, target_height=256, obj_scale=1, target_stroke_width=1.5):
@@ -192,8 +198,10 @@ def process_file(svg_path, target_width=256, target_height=256, obj_scale=1, tar
     scene_args = pydiffvg.RenderFunction.serialize_scene(target_width, target_height, shapes_init, shape_groups_init)
     render = pydiffvg.RenderFunction.apply
     
-    os.makedirs("new_input", exist_ok=True)
-    pydiffvg.save_svg(f"new_input/{os.path.splitext(os.path.basename(svg_path))[0]}_scaled.svg", target_width, target_height, shapes_init, shape_groups_init)
+    new_input_dir = os.path.join(PROJECT_ROOT, "new_input")
+    os.makedirs(new_input_dir, exist_ok=True)
+    output_file = os.path.join(new_input_dir, f"{os.path.splitext(os.path.basename(svg_path))[0]}_scaled.svg")
+    pydiffvg.save_svg(output_file, target_width, target_height, shapes_init, shape_groups_init)
 
 def process_folder(folder_path, target_width=256, target_height=256, obj_scale=1, target_stroke_width=1.5):
     """Process all SVG files in a folder."""
@@ -249,9 +257,9 @@ import zipfile
 import io
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['OUTPUT_FOLDER'] = 'outputs'
-app.config['AFTER_MOVE_FOLDER'] = 'afterMove'
+app.config['UPLOAD_FOLDER'] = os.path.join(PROJECT_ROOT, 'uploads')
+app.config['OUTPUT_FOLDER'] = os.path.join(PROJECT_ROOT, 'outputs')
+app.config['AFTER_MOVE_FOLDER'] = os.path.join(PROJECT_ROOT, 'afterMove')
 
 # Ensure upload and output directories exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -289,7 +297,7 @@ def upload_svg():
         resize_canvas(original_path, target_width=256, target_height=256, obj_scale=1, target_stroke_width=1.5)
         
         # The resize_canvas function saves the processed SVG to the 'uploads' directory as 'scaled.svg'
-        processed_path = os.path.join("uploads", f"scaled.svg")
+        processed_path = os.path.join(app.config['UPLOAD_FOLDER'], f"scaled.svg")
         
         # Build parse info using the processed SVG file
         tree = ET.parse(processed_path)
@@ -741,7 +749,8 @@ def start_training():
             env = os.environ.copy()
             env['CUDA_VISIBLE_DEVICES'] = '0'  
             
-            process = subprocess.Popen(cmd, cwd='/data/common/lgt/GroupSketch', env=env,
+            # 使用项目根目录作为工作目录，确保可移植性
+            process = subprocess.Popen(cmd, cwd=PROJECT_ROOT, env=env,
                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             training_tasks[task_id]['process'] = process
             training_tasks[task_id]['status'] = 'running'

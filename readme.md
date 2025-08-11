@@ -67,6 +67,23 @@ python app.py
   - Configure animation parameters (duration, frames, etc.)
   - Click "Generate Animation" to start processing
 
+## 🎬 Interactive Tutorial
+
+**Experience GroupSketch in Action**: Watch our comprehensive walkthrough demonstrating the complete workflow from sketch upload to animation generation.
+
+<div align="center">
+
+### 🖱️ Canvas Web Interface Demo
+
+[![Watch the Tutorial](https://img.shields.io/badge/▶️_Watch-Tutorial_Video-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](./assets/operation_tutorial.mp4)
+
+**[📹 Click here to watch the complete tutorial](./assets/operation_tutorial.mp4)**
+
+*Complete end-to-end demonstration of the GroupSketch web interface, showcasing object grouping, motion trajectory definition, and real-time animation generation.*
+
+</div>
+
+> **💡 Pro Tip**: Follow along with the tutorial using your own sketches to master the GroupSketch workflow!
 
 ## 📊 Features
 
