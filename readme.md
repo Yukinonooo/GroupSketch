@@ -58,8 +58,7 @@ python app.py
 
 
 2. **Upload your sketch**: 
-  - Support formats: SVG, PNG, JPG
-  - Automatic SVG conversion for raster images
+  - Support formats: SVG
 
 3. **Define object groups**:
   - Use the interactive Canvas to group related objects
@@ -79,7 +78,7 @@ python app.py
 
 [![Watch the Tutorial](https://img.shields.io/badge/▶️_Watch-Tutorial_Video-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](./assets/operation_tutorial.mp4)
 
-**[📹 Click here to watch the complete tutorial](./assets/operation_tutorial.mp4)**
+**[📹 Click here to download and watch the complete tutorial](./assets/operation_tutorial.mp4)**
 
 *Complete end-to-end demonstration of the GroupSketch web interface, showcasing object grouping, motion trajectory definition, and real-time animation generation.*
 
@@ -139,11 +138,6 @@ This project is built upon the incredible work of:
 
 Special thanks to the authors and contributors of both projects!
 
-
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
 
 ## 📬 Contact
 
