@@ -1,0 +1,55 @@
+gpu: 7
+entry: animate_svg.py
+arguments:
+  target: experiments/2026-11-08-server-bringup-r1/inputs/juzhong/input
+  caption: A weightlifter performs a squat-style lift, moving the barbell up and down
+    while holding it with both hands.
+  output_folder: 2026-11-08-ccfe-full-ablation/juzhong-ccfe-none
+  seed: 1000
+  model_name: damo-vilab/text-to-video-ms-1.7b
+  timesteps: 1000
+  guidance_scale: 30
+  batch_size: 1
+  render_size_h: 256
+  render_size_w: 256
+  num_frames: 16
+  sds_timestep_low: 50
+  same_noise_for_frames: false
+  augment_frames: true
+  use_xformers: false
+  del_text_encoders: false
+  num_iter: 1000
+  optim_points: true
+  optim_points_with_mlp: true
+  split_global_loss: true
+  guidance_scale_global: 40
+  lr_base_global: 0.0001
+  predict_global_frame_deltas: 1
+  predict_only_global: false
+  inter_dim: 128
+  use_shared_backbone_for_global: false
+  embed_dim: 128
+  normalize_input: 0
+  translation_layer_norm_weight: 0
+  rotation_weight: 0.01
+  scale_weight: 0.05
+  shear_weight: 0.1
+  translation_weight: 0.01
+  lr_local: 0.005
+  lr_init: 0.002
+  lr_final: 0.0008
+  lr_delay_mult: 0.1
+  lr_delay_steps: 100
+  const_lr: 0
+  display_iter: 50
+  save_vid_iter: 100
+  report_to_wandb: false
+  wandb_user: null
+  wandb_project_name: null
+  wandb_run_name: null
+  folder_as_wandb_run_name: false
+  use_canvas: true
+  dino: false
+  merge_groups: false
+  timeE: false
+  progress_callback_file: /data/common/lgt/GroupSketch/experiments/2026-11-08-ccfe-full-ablation/logs/juzhong-ccfe-none-progress.json

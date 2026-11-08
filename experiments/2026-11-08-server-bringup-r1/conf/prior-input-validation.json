@@ -1,0 +1,126 @@
+{
+  "all_pairs_equal_except_dino_output_progress": true,
+  "all_use_canvas": true,
+  "runtime_motion_files": [
+    {
+      "run": "2026-11-08-server-bringup-r1/ccfe-on",
+      "motion": "motion_data_0.txt",
+      "sha256": "47480e00a911f7f47287d7bd4cfad4ab2ef0585d91f48f72705f444c8230b6d2",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/ccfe-on",
+      "motion": "motion_data_2.txt",
+      "sha256": "47480e00a911f7f47287d7bd4cfad4ab2ef0585d91f48f72705f444c8230b6d2",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/ccfe-on",
+      "motion": "motion_data_1.txt",
+      "sha256": "789964490affd0c052ef74bef6282d3b796e4d010be349a68e38a708dde05e1a",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/ccfe-off",
+      "motion": "motion_data_0.txt",
+      "sha256": "47480e00a911f7f47287d7bd4cfad4ab2ef0585d91f48f72705f444c8230b6d2",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/ccfe-off",
+      "motion": "motion_data_2.txt",
+      "sha256": "47480e00a911f7f47287d7bd4cfad4ab2ef0585d91f48f72705f444c8230b6d2",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/ccfe-off",
+      "motion": "motion_data_1.txt",
+      "sha256": "789964490affd0c052ef74bef6282d3b796e4d010be349a68e38a708dde05e1a",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/che-ccfe-on",
+      "motion": "motion_data_0.txt",
+      "sha256": "556e92fec02ac1a3172634e14f7d0d5c915cca6cc9caf1219263451624c7bada",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/che-ccfe-on",
+      "motion": "motion_data_1.txt",
+      "sha256": "34c1afcc6e950e518efaef5df9688a54131552adf48f84c4e78de3876a6418cb",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/che-ccfe-off",
+      "motion": "motion_data_0.txt",
+      "sha256": "556e92fec02ac1a3172634e14f7d0d5c915cca6cc9caf1219263451624c7bada",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/che-ccfe-off",
+      "motion": "motion_data_1.txt",
+      "sha256": "34c1afcc6e950e518efaef5df9688a54131552adf48f84c4e78de3876a6418cb",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/dancers-ccfe-on",
+      "motion": "motion_data_0.txt",
+      "sha256": "34c1afcc6e950e518efaef5df9688a54131552adf48f84c4e78de3876a6418cb",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/dancers-ccfe-on",
+      "motion": "motion_data_2.txt",
+      "sha256": "e8d09f04af47ecf53997aa1e5d231d5515c038a6dc028c5078b74f8ff3ae2004",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/dancers-ccfe-on",
+      "motion": "motion_data_1.txt",
+      "sha256": "34c1afcc6e950e518efaef5df9688a54131552adf48f84c4e78de3876a6418cb",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/dancers-ccfe-off",
+      "motion": "motion_data_0.txt",
+      "sha256": "34c1afcc6e950e518efaef5df9688a54131552adf48f84c4e78de3876a6418cb",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/dancers-ccfe-off",
+      "motion": "motion_data_2.txt",
+      "sha256": "e8d09f04af47ecf53997aa1e5d231d5515c038a6dc028c5078b74f8ff3ae2004",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/dancers-ccfe-off",
+      "motion": "motion_data_1.txt",
+      "sha256": "34c1afcc6e950e518efaef5df9688a54131552adf48f84c4e78de3876a6418cb",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/juzhong-ccfe-on",
+      "motion": "motion_data_0.txt",
+      "sha256": "34c1afcc6e950e518efaef5df9688a54131552adf48f84c4e78de3876a6418cb",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/juzhong-ccfe-on",
+      "motion": "motion_data_1.txt",
+      "sha256": "b994b9800d3ef707adf5b75baca250c29d25c5b4ab0128a169cc43c234d6d886",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/juzhong-ccfe-off",
+      "motion": "motion_data_0.txt",
+      "sha256": "34c1afcc6e950e518efaef5df9688a54131552adf48f84c4e78de3876a6418cb",
+      "runtime_copy_matches": true
+    },
+    {
+      "run": "2026-11-08-server-bringup-r1/juzhong-ccfe-off",
+      "motion": "motion_data_1.txt",
+      "sha256": "b994b9800d3ef707adf5b75baca250c29d25c5b4ab0128a169cc43c234d6d886",
+      "runtime_copy_matches": true
+    }
+  ]
+}
