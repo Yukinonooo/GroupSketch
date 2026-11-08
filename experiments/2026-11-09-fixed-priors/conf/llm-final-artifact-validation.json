@@ -1,0 +1,100 @@
+[
+  {
+    "run": "che-llm-translation",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "25b1e0585978916f0f3e02e543de7cde567f8e69d5bcc470e564b8f2d3a34d10",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "5635f7083ab59da332bfd8d44392af9bcfe6785345aa4ec1b589f66cf35e430f"
+  },
+  {
+    "run": "dancers-llm-affine",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "dda7814896855b97e6c878093403e71054f8b442fadea6553720d70f6ceacbc3",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "175860d9f197b79f4f6d9122bad33bf2a2ba8ff226bffdf5521962b683b04939"
+  },
+  {
+    "run": "dancers-llm-translation",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "74d6ab59e8bf459aa4ef2e08ffd038f333b9237ae26a0b1968892a82ec469fd6",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "4a86ae7e2c50b6b05e15bcce8d25eff86522642e50243a3b4a0845757d7b8792"
+  },
+  {
+    "run": "juzhong-llm-affine",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "1b8462ed1bd86c9100996950ccee6d7a8a34f6785ad8b6a6029aa919879c8d7f",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "967bc065b7e999856c7e87ca01f0f0a1c538cc9ec8724134dc52783573e9537f"
+  },
+  {
+    "run": "juzhong-llm-translation",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "c2a3d98b2479d12cbb3a67d3ce36413bbe6e0a015c6789cdd1815bf88fe78060",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "f5fa3e76bec8e2192a430c6396daae2f0ca376f07a73cac2219ed3e0841af39e"
+  },
+  {
+    "run": "toulan-llm-affine",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 24,
+    "gif_decoded_frames": 24,
+    "gif_sha256": "c8e70988e15551577ce0e436ad4fc8a8f4febafd5eaad17e0cf8756c58b235a8",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "24"
+    },
+    "mp4_sha256": "4c05e73775c26c7091003bdeb155c75e5e5c47a0748d9ef8692a670cae42d8d1"
+  },
+  {
+    "run": "toulan-llm-translation",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 24,
+    "gif_decoded_frames": 24,
+    "gif_sha256": "0703d0e5aef9d0a68f686efdcfbc1bfda4f300752c2bed2dde340904dcc1cc99",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "24"
+    },
+    "mp4_sha256": "0ff97c7168588931b29958e71490022026baa74d4a49eb7c034fd27c0ed77756"
+  }
+]

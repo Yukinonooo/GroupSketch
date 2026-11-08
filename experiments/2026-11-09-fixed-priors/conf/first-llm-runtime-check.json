@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-11-09T01:13:38.324468",
+  "run": "toulan-llm-affine",
+  "pid": 169077,
+  "cwd": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior",
+  "argv": [
+    "python",
+    "-u",
+    "animate_svg.py",
+    "--target",
+    "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/toulan-affine-v2/input",
+    "--caption",
+    "A person shoots a basketball toward the hoop.",
+    "--num_frames",
+    "24",
+    "--num_iter",
+    "1000",
+    "--seed",
+    "1000",
+    "--dino",
+    "--timeE",
+    "--affine_prior",
+    "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/toulan-affine-v2/input/affine-prior.yaml",
+    "--output_folder",
+    "2026-11-09-fixed-priors/toulan-llm-affine",
+    "--progress_callback_file",
+    "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-fixed-priors/logs/toulan-llm-affine-progress.json"
+  ],
+  "progress": {
+    "step": 8,
+    "total_steps": 1000,
+    "progress": 0.8,
+    "loss": 1.0,
+    "elapsed_time": 44,
+    "estimated_remaining": 4940,
+    "lr_points": 0.0010562286042037025,
+    "lr_global": 2.1124572084074052e-05,
+    "status": "training"
+  },
+  "acceptance": "进程与实际入口及优化进度已核验；非最终结果或质量验收"
+}

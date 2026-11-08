@@ -1,6 +1,6 @@
 # 修复版本与 Opus 自动先验
 
-用户明确授权优化现有代码。原 /data/common/lgt/GroupSketch 的实验继续运行。本工作树位于 /data/common/lgt/GroupSketch-worktrees/llm-affine-prior，分支 liangguotao/feat-llm-affine-prior，不修改原任务引用的源码。
+用户明确授权优化现有代码。实施修复时，原 /data/common/lgt/GroupSketch 的实验继续运行且源码保持冻结；两批现已完成。本工作树位于 /data/common/lgt/GroupSketch-worktrees/llm-affine-prior，分支 liangguotao/feat-llm-affine-prior，不修改原任务引用的源码。
 
 ## 已复现并修复的问题
 
@@ -8,7 +8,7 @@
 2. zero_grad_ 仅清局部优化器，独立全局参数梯度跨 loss/迭代累积；现在两个优化器均清梯度。共享参数仍按原双分支设计更新。
 3. SDSVideoLoss 默认 reuse_pipe=False，第一次模型不进入共享缓存，第二个损失又加载一份；默认改为复用同一权重管线。
 
-tests/test_runtime_correctness.py 的三项检查在修复前均失败，修复后通过：实际 scale 梯度、实际全局梯度、模型加载次数与对象身份。日志在 logs/runtime-before*.log 和 runtime-after.log。尚需真实 GPU 完整生成验证；mock加载检查不等于实际显存测量。
+tests/test_runtime_correctness.py 的三项检查在修复前均失败，修复后通过：实际 scale 梯度、实际全局梯度、模型加载次数与对象身份。日志在 logs/runtime-before*.log 和 runtime-after.log。后续11个独立真实GPU任务均完整结束并通过文件验收；mock加载检查不等于实际显存峰值测量。
 
 ## 仿射先验适配
 
@@ -24,4 +24,6 @@ motion_prior.py 负责校验并编译 LLM 先验。tools/prepare_llm_prior.py �
 
 准备调用 tools/prepare_llm_prior.py，参数 --svg、--plan、--output、--caption、--num-frames、--variant；CUDA_VISIBLE_DEVICES="" 在CPU导出粗先验，不运行SDS。实际优化仍使用 animate_svg.py。
 
-v1预览在 output_videos/llm-prior-preview，只是粗动画；模型原输出保存在各输入 planner-output.json。粗预览暴露语义与连接问题后，正在给Opus回传真实帧做一次反馈修订，v1保留。后续用同一修复版本比较人工先验、LLM平移、LLM仿射，避免混入代码修复收益；原CCFE消融只解释原实现。
+v1预览在 output_videos/llm-prior-preview，只是粗动画；模型原输出保存在各输入 planner-output.json。粗预览暴露语义与连接问题后，已给Opus回传真实帧并完成一次反馈修订，v1保留。后续用同一修复版本比较人工先验、LLM平移、LLM仿射，避免混入代码修复收益；原CCFE消融只解释原实现。
+
+最终状态：反馈v2已冻结并完成真实优化与统一评分。当前生成入口为本工作树；原仓库保留原版消融来源。完整运行与验收记录见 ../2026-11-09-fixed-priors/README.md，数据与评分解释留在私有论文项目。

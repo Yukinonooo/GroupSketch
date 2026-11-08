@@ -150,3 +150,5 @@ GitHub.
 ## 本机实验入口补充（2026-11-09）
 
 现成环境 video_svg，先 source tools/env.sh。本分支的修复、仿射先验适配及验证状态见 experiments/2026-11-09-llm-affine-prior/README.md。准备输入使用 tools/prepare_llm_prior.py，动画仍用 animate_svg.py，评分沿用论文工作区的Flash直接rubric。
+
+当前适配已完成11次独立完整生成验证。运行配置和最终产物验收见 [先验实验记录](experiments/2026-11-09-fixed-priors/README.md)。参数默认不传 `--affine_prior` 时保留原输入行为；自动先验采用显式YAML输入，详细约定见上述适配记录。
