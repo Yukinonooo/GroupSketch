@@ -1,0 +1,23 @@
+che-llm-affine:
+  reuse_run: che-llm-translation
+  status: duplicate_queue_cancelled_before_generation
+  cancelled_queue_pid: 3119349
+  reason: identical effective matrices, grouped SVG and all coarse frames; motion_prior
+    loader ignores descriptive variant field
+  frame_sha256:
+    frame-1.svg: 3109bf484a5f8d40b1f43cad4a91c8a63871e8bf89320f22cec3811714c3087f
+    frame-2.svg: 08bb5994bb241f0a3de217a7fa97e7bb16f4ebb708cba3c79fd428ee4df75b93
+    frame-3.svg: 3ac080f36a6d37a4c5552d33c619c35f16841041e542f265f7156c6f51197d0f
+    frame-4.svg: 26afa4b8ca04518f272daa5f0fa3cb93e1b6ce8d1739e960448fb5cef8c43e85
+    frame-5.svg: 2de9b25f097c8b6f78c682b69dedb54972b57e185cbdb13eacaf91c3a3fdec11
+    frame-6.svg: 99de8a6cb4b9721ec33c970f0a551dd7b657a230db1841fc54cbd439e638d009
+    frame-7.svg: 1b838e8fe54f4b24eee4b1bfb59e0d9230cc1c697e2fdcb7fd42788cee9f03da
+    frame-8.svg: c1db978656cf4fddd1b55db25acfabe43ffac2d675a16df0b1d6cab95650e96d
+    frame-9.svg: f45fd0ff4dd38d29558e93408c6b954427d6f6534a8b514ef816def3928f29a0
+    frame-10.svg: a1c39323542005f480a590b66e1bad64db9e651b56744311905628eaf092b91a
+    frame-11.svg: c2580ec15e9ea4956a9a99ed0b981e936c322e0bb1c1fdca76433d01d833f95e
+    frame-12.svg: c055ab20574fd4c5310b8444eab03ba73e05f666ccf87ab8fb9b495d44a4ba11
+    frame-13.svg: 25deb90747a0deccd31c196e73a71ba9ad10c2a73f4cb56f815240e1c5014c9d
+    frame-14.svg: d55b1e91c044667cec484dc50896e34113535d4330eae751e845b09b43827ad1
+    frame-15.svg: 0b73d82fa91034e795c54051a8654ba0d541bd9549b873825f7e551d7a60ef9f
+    frame-16.svg: 519600ccbcd3c2c8c26a2f19c63601652e72ba89c77256d8b072b705a82f154a
