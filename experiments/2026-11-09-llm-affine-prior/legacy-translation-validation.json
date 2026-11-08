@@ -1,0 +1,18 @@
+[
+  {
+    "case": "ccfe-on",
+    "legacy_vs_equivalent_translation_max_error": 7.62939453125e-06
+  },
+  {
+    "case": "che-ccfe-on",
+    "legacy_vs_equivalent_translation_max_error": 0.0
+  },
+  {
+    "case": "dancers-ccfe-on",
+    "legacy_vs_equivalent_translation_max_error": 7.62939453125e-06
+  },
+  {
+    "case": "juzhong-ccfe-on",
+    "legacy_vs_equivalent_translation_max_error": 7.62939453125e-06
+  }
+]

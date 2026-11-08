@@ -1,0 +1,30 @@
+[
+  {
+    "package": "flask",
+    "source": "/home/liangguotao/.local/lib/python3.10/site-packages/flask"
+  },
+  {
+    "package": "werkzeug",
+    "source": "/home/liangguotao/.local/lib/python3.10/site-packages/werkzeug"
+  },
+  {
+    "package": "jinja2",
+    "source": "/home/liangguotao/.local/lib/python3.10/site-packages/jinja2"
+  },
+  {
+    "package": "click",
+    "source": "/home/liangguotao/.local/lib/python3.10/site-packages/click"
+  },
+  {
+    "package": "itsdangerous",
+    "source": "/home/liangguotao/.local/lib/python3.10/site-packages/itsdangerous"
+  },
+  {
+    "package": "blinker",
+    "source": "/home/liangguotao/.local/lib/python3.10/site-packages/blinker"
+  },
+  {
+    "package": "markupsafe",
+    "source": "/home/liangguotao/.local/lib/python3.10/site-packages/markupsafe"
+  }
+]

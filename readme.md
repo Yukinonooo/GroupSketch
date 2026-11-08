@@ -147,3 +147,6 @@ GitHub.
 ---
 
 **Star ⭐ this repository if you find it helpful!**
+## 本机实验入口补充（2026-11-09）
+
+现成环境 video_svg，先 source tools/env.sh。本分支的修复、仿射先验适配及验证状态见 experiments/2026-11-09-llm-affine-prior/README.md。准备输入使用 tools/prepare_llm_prior.py，动画仍用 animate_svg.py，评分沿用论文工作区的Flash直接rubric。

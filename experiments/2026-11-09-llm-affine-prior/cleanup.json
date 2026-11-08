@@ -1,0 +1,13 @@
+{
+  "removed_unused_canvas_intermediates": [
+    {
+      "path": "new_input/frame-1_cleaned_scaled.svg",
+      "bytes": 5879
+    },
+    {
+      "path": "experiments/2026-11-09-llm-affine-prior/inputs/che-affine/frame-1_cleaned.svg",
+      "bytes": 6392
+    }
+  ],
+  "bytes": 12271
+}

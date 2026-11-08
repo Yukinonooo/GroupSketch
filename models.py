@@ -181,7 +181,7 @@ class PointModel(nn.Module):
             shear_x = shear_x * self.shear_weight  
             shear_y = shear_y * self.shear_weight
 
-            scale_x, scale_y = self.frames_rigid_shear(shared_params).reshape(self.num_frames, 2).chunk(2, axis=-1)
+            scale_x, scale_y = self.frames_rigid_scale(shared_params).reshape(self.num_frames, 2).chunk(2, axis=-1)
             scale_x = torch.ones_like(dx) + scale_x * self.scale_weight  
             scale_y = torch.ones_like(dy) + scale_y * self.scale_weight
 

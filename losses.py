@@ -170,7 +170,7 @@ class SDSLossBase(nn.Module):
 # =========== Basic SDS loss  ===========
 # =======================================
 class SDSVideoLoss(SDSLossBase):
-    def __init__(self, cfg, device, reuse_pipe=False):
+    def __init__(self, cfg, device, reuse_pipe=True):
         super(SDSVideoLoss, self).__init__(cfg, device, reuse_pipe=reuse_pipe)
 
     def forward(self, x_aug, grad_scale=1.0):

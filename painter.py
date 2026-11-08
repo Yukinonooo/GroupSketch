@@ -9,6 +9,7 @@ from torch.optim.lr_scheduler import LambdaLR
 # from torchsummary import summary
 import pydiffvg
 import utils
+from motion_prior import load_affine_prior
 import xml.etree.ElementTree as ET
 from models import PointMLP
 
@@ -31,6 +32,7 @@ class Painter(torch.nn.Module):
         self.render = pydiffvg.RenderFunction.apply
         self.normalize_input = args.normalize_input
         self.use_canvas = args.use_canvas
+        self.affine_prior = getattr(args, "affine_prior", None)
         self.dino_fusion = args.dino
         self.timeE = args.timeE
         self.merge_groups = args.merge_groups  
@@ -120,7 +122,11 @@ class Painter(torch.nn.Module):
         self.original_center.requires_grad = False
         #4. get motion data from canvas
         motion_data_by_g = {}
-        if self.use_canvas:
+        self.affine_matrices = (load_affine_prior(self.affine_prior, self.num_frames, svg_path)
+                                if self.affine_prior else None)
+        if self.affine_matrices is not None:
+            self.affine_matrices = torch.as_tensor(self.affine_matrices, dtype=torch.float32, device=self.device)
+        if self.use_canvas and self.affine_matrices is None:
             for g_idx in range(self.num_g):
                 motion_data = self.get_motion_data_from_canvas(g_idx)
                 if motion_data is not None:
@@ -146,17 +152,22 @@ class Painter(torch.nn.Module):
                 base_deltas = deltas_from_center[cur:cur+num_paths]
                 frame_shapes = []
                 # apply motion data from canvas
-                if g_idx in motion_data_by_g:
-                    frame_motion = motion_data_by_g[g_idx][frame_idx]  # get motion data for current frame
+                if g_idx in motion_data_by_g or self.affine_matrices is not None:
+                    frame_motion = (motion_data_by_g[g_idx][frame_idx]
+                                    if self.affine_matrices is None else None)  # get motion data for current frame
                     # create new list to store updated deltas
                     frame_deltas = []
                     
                     # process each path
                     for path_idx, path_delta in enumerate(base_deltas):
                         # apply motion to delta
-                        motion = frame_motion.unsqueeze(0).expand(4, -1)  # [4, 2]
-
-                        updated_delta = path_delta + motion
+                        if self.affine_matrices is None:
+                            motion = frame_motion.unsqueeze(0).expand(4, -1)
+                            updated_delta = path_delta + motion
+                        else:
+                            matrix = self.affine_matrices[g_idx, frame_idx]
+                            points = path_delta + self.original_center
+                            updated_delta = points @ matrix[:2, :2].T + matrix[:2, 2] - self.original_center
                         frame_deltas.append(updated_delta)
                         
                         # update actual path points coordinates
@@ -192,7 +203,7 @@ class Painter(torch.nn.Module):
             
             cur += num_paths
         
-    def render_frames_to_tensor_mlp(self):
+    def render_frames_to_tensor_mlp(self, apply_mlp=True):
         """render frames sequence to tensor, support merging all <g> groups"""
         frames_shepesAndgroups_by_g = {}
         points_init_frame_by_g = {}
@@ -204,10 +215,14 @@ class Painter(torch.nn.Module):
             
             # get initial point coordinates and apply MLP prediction
             prev_points = self.points_mlp_input_by_g[g_idx].clone().squeeze(0) + self.original_center
-            frame_input = self.points_mlp_input_by_g_[g_idx]
-            if self.normalize_input:
-                frame_input = utils.normalize_tensor(frame_input)
-            delta_prediction = self.mlp_points_by_g[g_idx](frame_input)
+            if apply_mlp:
+                frame_input = self.points_mlp_input_by_g_[g_idx]
+                if self.normalize_input:
+                    frame_input = utils.normalize_tensor(frame_input)
+                delta_prediction = self.mlp_points_by_g[g_idx](frame_input)
+            else:
+                # Export the exact initialization through the existing renderer.
+                delta_prediction = torch.zeros_like(prev_points)
             
             # process each frame
             for i in range(self.num_frames):
@@ -602,8 +617,8 @@ class PainterOptimizer:
     def zero_grad_(self):
         if self.optim_points:
             self.points_delta_optimizer.zero_grad()
-        # if self.optim_global:
-        #     self.global_delta_optimizer.zero_grad()
+        if self.optim_global:
+            self.global_delta_optimizer.zero_grad()
 
 
     def step_(self, skip_global=False, skip_points=False):

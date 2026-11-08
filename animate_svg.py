@@ -89,6 +89,7 @@ def parse_arguments():
 
     # use Canvas to make motion data
     parser.add_argument("--use_canvas", default=True, help="Whether to use Canvas to make motion data")
+    parser.add_argument("--affine_prior", type=str, default=None, help="Explicit per-group affine initialization YAML; replaces Canvas translations")
     # use dinov2 for image feature fusion
     parser.add_argument("--dino", action="store_true", help="Whether to use dinov2 for image feature fusion")
     parser.add_argument('--merge_groups', action='store_true', help='Merge all SVGs into one group for processing')
