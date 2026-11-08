@@ -1,0 +1,59 @@
+gpu: 6
+entry: animate_svg.py
+arguments:
+  target: /data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/dancers-translation-v2/input
+  caption: Two people turn a long jump rope while two people in the middle jump over
+    it.
+  output_folder: 2026-11-09-fixed-priors/dancers-llm-translation
+  seed: 1000
+  model_name: damo-vilab/text-to-video-ms-1.7b
+  timesteps: 1000
+  guidance_scale: 30
+  batch_size: 1
+  render_size_h: 256
+  render_size_w: 256
+  num_frames: 16
+  sds_timestep_low: 50
+  same_noise_for_frames: false
+  augment_frames: true
+  use_xformers: false
+  del_text_encoders: false
+  num_iter: 1000
+  optim_points: true
+  optim_points_with_mlp: true
+  split_global_loss: true
+  guidance_scale_global: 40
+  lr_base_global: 0.0001
+  predict_global_frame_deltas: 1
+  predict_only_global: false
+  inter_dim: 128
+  use_shared_backbone_for_global: false
+  embed_dim: 128
+  normalize_input: 0
+  translation_layer_norm_weight: 0
+  rotation_weight: 0.01
+  scale_weight: 0.05
+  shear_weight: 0.1
+  translation_weight: 0.01
+  lr_local: 0.005
+  lr_init: 0.002
+  lr_final: 0.0008
+  lr_delay_mult: 0.1
+  lr_delay_steps: 100
+  const_lr: 0
+  display_iter: 50
+  save_vid_iter: 100
+  report_to_wandb: false
+  wandb_user: null
+  wandb_project_name: null
+  wandb_run_name: null
+  folder_as_wandb_run_name: false
+  use_canvas: true
+  dino: true
+  merge_groups: false
+  timeE: true
+  progress_callback_file: /data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-fixed-priors/logs/dancers-llm-translation-progress.json
+  affine_prior: /data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/dancers-translation-v2/input/affine-prior.yaml
+source_commit: b4ba52667448f5a24eb8e1d4b65d8d1d456ae411
+planner_revision: feedback-v2
+plan_sha256: 9e0c7ad57f21827203526b0dd86da733f562a746b49455eda2cb6ce0647b8d8c

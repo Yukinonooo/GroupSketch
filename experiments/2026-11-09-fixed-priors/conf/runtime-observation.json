@@ -1,0 +1,7 @@
+{
+  "case": "che-human",
+  "observed_step": 30,
+  "observed_status": "training",
+  "pipeline_initializations": 1,
+  "full_run_completed": false
+}
