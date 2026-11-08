@@ -1,0 +1,66 @@
+[
+  {
+    "name": "toulan-NoMCL",
+    "gpu": 0,
+    "method": "NoMCL",
+    "scene": "toulan",
+    "target": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/toulan-affine-v2/input",
+    "affine_prior": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/toulan-affine-v2/input/affine-prior.yaml"
+  },
+  {
+    "name": "toulan-NoMCL-NoTime",
+    "gpu": 1,
+    "method": "NoMCL-NoTime",
+    "scene": "toulan",
+    "target": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/toulan-affine-v2/input",
+    "affine_prior": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/toulan-affine-v2/input/affine-prior.yaml"
+  },
+  {
+    "name": "che-NoMCL",
+    "gpu": 2,
+    "method": "NoMCL",
+    "scene": "che",
+    "target": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/che-affine-v2/input",
+    "affine_prior": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/che-affine-v2/input/affine-prior.yaml"
+  },
+  {
+    "name": "che-NoMCL-NoTime",
+    "gpu": 3,
+    "method": "NoMCL-NoTime",
+    "scene": "che",
+    "target": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/che-affine-v2/input",
+    "affine_prior": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/che-affine-v2/input/affine-prior.yaml"
+  },
+  {
+    "name": "dancers-NoMCL",
+    "gpu": 4,
+    "method": "NoMCL",
+    "scene": "dancers",
+    "target": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/dancers-affine-v2/input",
+    "affine_prior": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/dancers-affine-v2/input/affine-prior.yaml"
+  },
+  {
+    "name": "dancers-NoMCL-NoTime",
+    "gpu": 5,
+    "method": "NoMCL-NoTime",
+    "scene": "dancers",
+    "target": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/dancers-affine-v2/input",
+    "affine_prior": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/dancers-affine-v2/input/affine-prior.yaml"
+  },
+  {
+    "name": "juzhong-NoMCL",
+    "gpu": 6,
+    "method": "NoMCL",
+    "scene": "juzhong",
+    "target": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/juzhong-affine-v2/input",
+    "affine_prior": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/juzhong-affine-v2/input/affine-prior.yaml"
+  },
+  {
+    "name": "juzhong-NoMCL-NoTime",
+    "gpu": 7,
+    "method": "NoMCL-NoTime",
+    "scene": "juzhong",
+    "target": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/juzhong-affine-v2/input",
+    "affine_prior": "/data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/juzhong-affine-v2/input/affine-prior.yaml"
+  }
+]

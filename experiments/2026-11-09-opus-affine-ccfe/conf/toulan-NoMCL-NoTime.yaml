@@ -1,0 +1,59 @@
+gpu: 1
+entry: animate_svg.py
+arguments:
+  target: /data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/toulan-affine-v2/input
+  caption: A person shoots a basketball toward the hoop.
+  output_folder: 2026-11-09-opus-affine-ccfe/toulan-NoMCL-NoTime
+  seed: 1000
+  model_name: damo-vilab/text-to-video-ms-1.7b
+  timesteps: 1000
+  guidance_scale: 30
+  batch_size: 1
+  render_size_h: 256
+  render_size_w: 256
+  num_frames: 24
+  sds_timestep_low: 50
+  same_noise_for_frames: false
+  augment_frames: true
+  use_xformers: false
+  del_text_encoders: false
+  num_iter: 1000
+  optim_points: true
+  optim_points_with_mlp: true
+  split_global_loss: true
+  guidance_scale_global: 40
+  lr_base_global: 0.0001
+  predict_global_frame_deltas: 1
+  predict_only_global: false
+  inter_dim: 128
+  use_shared_backbone_for_global: false
+  embed_dim: 128
+  normalize_input: 0
+  translation_layer_norm_weight: 0
+  rotation_weight: 0.01
+  scale_weight: 0.05
+  shear_weight: 0.1
+  translation_weight: 0.01
+  lr_local: 0.005
+  lr_init: 0.002
+  lr_final: 0.0008
+  lr_delay_mult: 0.1
+  lr_delay_steps: 100
+  const_lr: 0
+  display_iter: 50
+  save_vid_iter: 100
+  report_to_wandb: false
+  wandb_user: null
+  wandb_project_name: null
+  wandb_run_name: null
+  folder_as_wandb_run_name: false
+  use_canvas: true
+  dino: false
+  merge_groups: false
+  timeE: false
+  progress_callback_file: /data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-opus-affine-ccfe/logs/toulan-NoMCL-NoTime-progress.json
+  affine_prior: /data/common/lgt/GroupSketch-worktrees/llm-affine-prior/experiments/2026-11-09-llm-affine-prior/inputs/toulan-affine-v2/input/affine-prior.yaml
+source_commit: 55a7108ce65197ed5acce11e22e7b09032586988
+planner_revision: feedback-v2
+plan_sha256: 2c8b9dfd804a14ff456e6eefd384010c5addf396b2dd83f3401b2e707c5cfb78
+runtime_equivalent_to: b4ba52667448f5a24eb8e1d4b65d8d1d456ae411
