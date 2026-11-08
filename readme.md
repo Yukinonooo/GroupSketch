@@ -147,3 +147,6 @@ GitHub.
 ---
 
 **Star ⭐ this repository if you find it helpful!**
+## 本次运行记录（2026-11-09）
+
+本分支保留原代码12组消融的运行来源，见 experiments/2026-11-08-server-bringup-r1 与 experiments/2026-11-08-ccfe-full-ablation。修复版及仿射先验的当前工作入口位于 /data/common/lgt/GroupSketch-worktrees/llm-affine-prior（liangguotao/feat-llm-affine-prior）；不以原分支替代已记录的修复版本。

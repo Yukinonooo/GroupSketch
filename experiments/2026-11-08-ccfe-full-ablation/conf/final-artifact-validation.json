@@ -1,0 +1,58 @@
+[
+  {
+    "run": "ccfe-none",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 24,
+    "gif_decoded_frames": 24,
+    "gif_sha256": "c8b048ec808d089c1e0c0725c74aaffa26490e5af334e4b10551a62efc403714",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "24"
+    },
+    "mp4_sha256": "db30ccdc15f905b7ec03c390014586f6e35e79b56d9f037fb77935c694375489"
+  },
+  {
+    "run": "che-ccfe-none",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "ff786e74cd487f84d26df07e26a400d0056aca61bc08f48e55f6ae06f2209adf",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "75bf972db23cafb0c8878c1f231b3829fe621d39916f744b6cc5f66a33c5434d"
+  },
+  {
+    "run": "dancers-ccfe-none",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "cf94495e98d8011a66b976816cacda27ae860387a9d166a958c9766113c78907",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "ba82bb1f24a6e9fc916ccbbb42b213043266046cf7ac28c9f72b47e64f31d8da"
+  },
+  {
+    "run": "juzhong-ccfe-none",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "00e83e4dbff4c5ea44c0fe4106a1c6b27758fca9e95587353658c96ba2d4ce5b",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "e007e7bac63c72b00d5556600b2134914056a0fa09323491e6468d995bce5845"
+  }
+]

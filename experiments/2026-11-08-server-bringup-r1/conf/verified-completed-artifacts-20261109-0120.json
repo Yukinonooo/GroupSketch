@@ -1,0 +1,114 @@
+[
+  {
+    "run": "ccfe-off",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 24,
+    "gif_decoded_frames": 24,
+    "gif_sha256": "b40b52196c0ec028e578e44f5aa49dc0f057b41c9f769dbc1aa02a162bc1035b",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "24"
+    },
+    "mp4_sha256": "dd65530ceb1cc28cca54a10cee5523b67d5168c21f7fccbd30d8f912186f75c0"
+  },
+  {
+    "run": "ccfe-on",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 24,
+    "gif_decoded_frames": 24,
+    "gif_sha256": "eb60ab49c434c79268b4b2d38e0edfd3879dd55a4c3b980355907fbf1897d18f",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "24"
+    },
+    "mp4_sha256": "f2642d332a945c262630e1ecfafb8cfac39be914211882a0f16cb32da3730a82"
+  },
+  {
+    "run": "che-ccfe-off",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "036505ad53a56951ddafc74ac24c1b209296d4525b0cf526033592f880035ba9",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "c51c111d8b47ac21b2e7407dcf7aa8f5bb5cf0a99049ac14637b0479de81edeb"
+  },
+  {
+    "run": "che-ccfe-on",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "f4ae12a0e8f2e801586d32fc24082d2ad93451f2794584b1e7076ffcff3e956e",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "5fb6130e8b2128bfdd58bcb262f7544b51f595d3bdbf39eb8800b6cc82a90cb6"
+  },
+  {
+    "run": "dancers-ccfe-off",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "f9e25c16fc1eee2870b7cbe4dee376302fb89cfad8a9c74221a2110cd82aa5b8",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "8188874a8c148921bc2e10a7b02f3270d1b9360bf912dcafaf3e771c2093a26c"
+  },
+  {
+    "run": "dancers-ccfe-on",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "5ce6808009ab0f5073e386478fffb467660910ea59726d2939d0f98d48da589b",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "2d7cc0d746f13e41b5a68892f529a259da4f3ce67ad2bb92a4984a392bdecf00"
+  },
+  {
+    "run": "juzhong-ccfe-off",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "1007e77984fbcba8bac4c99b5e710d3c5f63be203c9f7f436a8b268d74e3513e",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "369cfdaf6fcdcbbe1657f706d92012eb52768511e5be23c487ee484be909d011"
+  },
+  {
+    "run": "juzhong-ccfe-on",
+    "exit_code": 0,
+    "step": 1000,
+    "svg_frames": 16,
+    "gif_decoded_frames": 16,
+    "gif_sha256": "aa94306c10e969c2275f2ad77e23611ca9aa105446e663f3b45328940d3d9806",
+    "mp4_decoded": {
+      "width": 256,
+      "height": 256,
+      "nb_read_frames": "16"
+    },
+    "mp4_sha256": "4f6715c425ecab7209085cbce1863121daa66e06615698c9f6afee622fc4a123"
+  }
+]
