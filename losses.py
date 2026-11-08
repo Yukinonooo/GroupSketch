@@ -4,7 +4,6 @@ import torch
 from torch.cuda.amp import custom_bwd, custom_fwd
 import pdb
 from safetensors.torch import load_file
-from peft.tuners.lora.layer import LoraLayer
 from einops import rearrange, repeat
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon

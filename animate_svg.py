@@ -227,7 +227,7 @@ if __name__ == "__main__":
     # save them to frames folder
     frames, paths = utils.process_and_save_tensor_frames(
         frames_tensor, 
-        save_dir="output/frames", 
+        save_dir=os.path.join(cfg.output_folder, "frames"),
         base_filename="my_frame"
     )
                     

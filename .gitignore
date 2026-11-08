@@ -177,3 +177,10 @@ check_*
 /tmp/
 /tmp_select/
 /tmp_select/*
+# 本机历史归档与本轮运行产物
+/GroupSketch_bk/
+/experiments/*/logs/
+/experiments/*/results/
+/output_videos/
+/output/
+/experiments/*/inputs/

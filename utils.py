@@ -221,7 +221,7 @@ def save_gif_from_pngs(path_to_png_files, gif_dest_path):
     for filename in filenames:
         im = imageio.imread(f"{path_to_png_files}/{filename}")
         images.append(im)
-    imageio.mimsave(f"{gif_dest_path}", images, 'GIF', loop=4, fps=8)
+    imageio.mimsave(f"{gif_dest_path}", images, 'GIF', loop=4, duration=1000 / 8)
 
 def save_hq_video(path_to_outputs, iter_=1000):
     """

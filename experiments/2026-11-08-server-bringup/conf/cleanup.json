@@ -1,0 +1,5 @@
+{
+  "removed_temporary_environment": ".venv",
+  "bytes": 41953847,
+  "reason": "reuse existing video_svg with PYTHONNOUSERSITE=1; shared environment unchanged"
+}
