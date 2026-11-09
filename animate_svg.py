@@ -92,6 +92,7 @@ def parse_arguments():
     parser.add_argument("--affine_prior", type=str, default=None, help="Explicit per-group affine initialization YAML; replaces Canvas translations")
     # use dinov2 for image feature fusion
     parser.add_argument("--dino", action="store_true", help="Whether to use dinov2 for image feature fusion")
+    parser.add_argument("--single_group_network", action="store_true", help="Use one GDN after applying unchanged per-path initialization priors")
     parser.add_argument('--merge_groups', action='store_true', help='Merge all SVGs into one group for processing')
     parser.add_argument("--timeE", action="store_true", help="Whether to use Time Encoding for image feature fusion")
     

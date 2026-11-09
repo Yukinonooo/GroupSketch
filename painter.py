@@ -38,6 +38,8 @@ class Painter(torch.nn.Module):
         self.merge_groups = args.merge_groups  
         # initialize SVG shapes
         self.init_shapes()
+        if getattr(args, "single_group_network", False):
+            self.collapse_network_groups()
         self.mlp_points_by_g = {}
         self.points_mlp_input_by_g_ = {}
 
@@ -79,6 +81,25 @@ class Painter(torch.nn.Module):
             if args.translation_layer_norm_weight:
                 self.init_translation_norm(args.translation_layer_norm_weight)       
                    
+    def collapse_network_groups(self):
+        """One GDN over the same initialized paths; no change to prior geometry."""
+        keys = list(self.frames_shapes_by_g)
+        self.initialization_group_count = len(keys)
+        self.frames_shapes_by_g = {0: [
+            [p for g in keys for p in self.frames_shapes_by_g[g][f]]
+            for f in range(self.num_frames)]}
+        self.frames_shapes_group_by_g = {0: [
+            [p for g in keys for p in self.frames_shapes_group_by_g[g][f]]
+            for f in range(self.num_frames)]}
+        self.frames_xy_deltas_from_center_by_g = {0: [
+            [p for g in keys for p in self.frames_xy_deltas_from_center_by_g[g][f]]
+            for f in range(self.num_frames)]}
+        self.points_mlp_input_by_g = {0: torch.cat([
+            torch.cat(frame) for frame in self.frames_xy_deltas_from_center_by_g[0]])}
+        self.count_paths_per_g_per_frame = {0: sum(self.count_paths_per_g_per_frame.values())}
+        self.counts_points_per_frame_by_g = {0: sum(self.counts_points_per_frame_by_g.values())}
+        self.num_g = 1
+
     def get_motion_data_from_canvas(self, g_idx):
         
         motion_data_path_src = os.path.join(self.motion_path, f'motion_data_{g_idx}.txt')
