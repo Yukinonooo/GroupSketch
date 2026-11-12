@@ -81,6 +81,12 @@ class Painter(torch.nn.Module):
             if args.translation_layer_norm_weight:
                 self.init_translation_norm(args.translation_layer_norm_weight)       
                    
+        # Remove branches only after all groups have consumed the same initialization RNG.
+        network_paths = getattr(args, "network_paths", "both")
+        if network_paths != "both":
+            for network in self.mlp_points_by_g.values():
+                network.select_network_paths(network_paths)
+
     def collapse_network_groups(self):
         """One GDN over the same initialized paths; no change to prior geometry."""
         keys = list(self.frames_shapes_by_g)
@@ -602,8 +608,8 @@ class PainterOptimizer:
         self.lr_delay_steps = args.lr_delay_steps
         self.max_steps = args.num_iter
         self.lr_lambda = lambda step: self.learning_rate_decay(step) / self.lr_init
-        self.optim_points = args.optim_points
-        self.optim_global = args.split_global_loss
+        self.optim_points = args.optim_points and getattr(args, "network_paths", "both") != "global"
+        self.optim_global = args.split_global_loss and getattr(args, "network_paths", "both") != "local"
 
     def learning_rate_decay(self, step):
         if self.lr_delay_steps > 0:

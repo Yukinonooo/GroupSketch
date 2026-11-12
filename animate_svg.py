@@ -55,6 +55,7 @@ def parse_arguments():
     parser.add_argument("--lr_base_global", type=float, default=0.0001, help="Base learning rate for the global path")
 
     # MLP architecture (points)
+    parser.add_argument("--network_paths", choices=["both", "local", "global"], default="both", help="Remove an entire refinement branch; grouping and initialization priors stay unchanged")
     parser.add_argument("--predict_global_frame_deltas", type=float, default=1, help="whether to predict a global delta per frame, the value is the weight of the output")
     parser.add_argument("-predict_only_global", action='store_true', help="whether to predict only global deltas")
     parser.add_argument("--inter_dim", type=int, default=128)
@@ -238,7 +239,7 @@ if __name__ == "__main__":
     sds_loss = SDSLoss(cfg, cfg.device)
     # if needed, set different parameters for the global path
     # reuse the same text-2-video diffusion pipeline
-    if cfg.predict_global_frame_deltas and cfg.split_global_loss:
+    if cfg.predict_global_frame_deltas and cfg.split_global_loss and cfg.network_paths != "local":
         global_cfg = copy.deepcopy(cfg)
         if cfg.guidance_scale_global is not None:
             global_cfg.guidance_scale = cfg.guidance_scale_global
@@ -250,7 +251,11 @@ if __name__ == "__main__":
     
     sds_losses_and_opt_kwargs = []
 
-    if cfg.predict_global_frame_deltas:
+    if cfg.network_paths == "global":
+        sds_losses_and_opt_kwargs.append((global_sds_loss, {"skip_points": True}))
+    elif cfg.network_paths == "local":
+        sds_losses_and_opt_kwargs.append((sds_loss, {"skip_global": True}))
+    elif cfg.predict_global_frame_deltas:
         # add two loss pairs:
         # - First pair: local deformation loss (skip_global=True → only optimize local)
         sds_losses_and_opt_kwargs.append((sds_loss, {"skip_global": True}))

@@ -237,6 +237,8 @@ class PointModel(nn.Module):
         
     def get_points_params(self):
         # Get local path parameters from the model
+        if getattr(self, "network_paths", "both") == "global":
+            return []
         shared_params = self.get_shared_params()
         project_xy_p = list(self.project_xy.parameters())
         model_p = list(self.model.parameters())
@@ -252,6 +254,8 @@ class PointModel(nn.Module):
                 - delta_p: parameters of the global transformation layer (global_layers)
         """
         # Get shared parameters (parameters of the point projection layer, embedding layer, and positional encoder)
+        if getattr(self, "network_paths", "both") == "local":
+            return []
         shared_params = self.get_shared_params()
         # Get parameters of the global transformation layer
         delta_p = list(self.global_layers.parameters())
@@ -286,6 +290,26 @@ class PointMLP(PointModel):
 
         # output layer: map features back to coordinate space
         self.last_linear_layer = nn.Linear(inter_dim, input_dim)
+
+    def select_network_paths(self, paths):
+        """Drop complete branch modules after common initialization of every group.
+
+        Keeping initialization order before removal preserves the retained weights
+        and RNG state of the frozen two-branch baseline, including later groups.
+        """
+        if paths not in ("both", "local", "global"):
+            raise ValueError(paths)
+        self.network_paths = paths
+        if paths == "global":
+            self.predict_only_global = True
+            for name in ("project_xy", "model", "last_linear_layer"):
+                delattr(self, name)
+        elif paths == "local":
+            self.predict_only_global = False
+            self.predict_global_frame_deltas = 0
+            for name in ("global_layers", "frames_rigid_shared", "frames_rigid_translation",
+                         "frames_rigid_rotation", "frames_rigid_shear", "frames_rigid_scale"):
+                delattr(self, name)
 
     def forward(self, init_points):
         """
